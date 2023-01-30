@@ -24,6 +24,16 @@ class Bitboard():
         """Gets the bitboard for a specific piece"""
         return self.piece_bitboards[piece_type]
 
+    def get_color_bitboards(self, color: bool):
+        """Gets the bitbaord of all pieces for a specific color"""
+        color_dict: Dict[int, int] = {}
+        for piece_type in PieceType:
+            if piece_type.value[1] == color:
+                color_dict[piece_type.value[0]] = self.piece_bitboards[piece_type]
+                # No need to retain color information if only returning one color type
+
+        return color_dict
+
     def get_all_piece_bitboard(self) -> Dict[PieceType, int]:
         """Returns all of pieces bitboards in one dictionary"""
         return self.piece_bitboards
