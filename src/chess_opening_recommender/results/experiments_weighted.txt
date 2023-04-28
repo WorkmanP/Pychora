@@ -1,0 +1,589 @@
+
+
+lichess_db_ol3_p2.json: 
+Side: White
+Openings recorded = 5533 
+{
+    "Number of components": 14,
+    "Type of covariance": "full",
+    "BIC score": -27275.84856449281
+}
+
+lichess_db_ol3_p4.json: 
+Side: White
+Openings recorded = 2865 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -12302.027197727164
+}
+
+lichess_db_ol3_p6.json: 
+Side: White
+Openings recorded = 3857 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -17471.149688773385
+}
+
+lichess_db_ol3_p8.json: 
+Side: White
+Openings recorded = 4270 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": -17696.625403167916
+}
+
+lichess_db_ol3_p10.json: 
+Side: White
+Openings recorded = 3364 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -14351.046630919456
+}
+
+lichess_db_ol3_p12.json: 
+Side: White
+Openings recorded = 2794 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -11850.077398697318
+}
+
+lichess_db_ol3_p14.json: 
+Side: White
+Openings recorded = 2404 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": -8961.13899418485
+}
+
+lichess_db_ol3_p16.json: 
+Side: White
+Openings recorded = 2080 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": -7604.057965651744
+}
+
+lichess_db_ol3_p18.json: 
+Side: White
+Openings recorded = 1813 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -5974.773563098448
+}
+
+lichess_db_ol3_p20.json: 
+Side: White
+Openings recorded = 1648 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -5602.749479167234
+}
+
+lichess_db_ol4_p2.json: 
+Side: White
+Openings recorded = 4557 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -14718.694095320297
+}
+
+lichess_db_ol4_p4.json: 
+Side: White
+Openings recorded = 2023 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -6399.714085423171
+}
+
+lichess_db_ol4_p6.json: 
+Side: White
+Openings recorded = 1237 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": -3435.2491563381773
+}
+
+lichess_db_ol4_p8.json: 
+Side: White
+Openings recorded = 875 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -2821.2193446031874
+}
+
+lichess_db_ol4_p10.json: 
+Side: White
+Openings recorded = 688 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -1847.4584437564267
+}
+
+lichess_db_ol4_p12.json: 
+Side: White
+Openings recorded = 556 
+{
+    "Number of components": 11,
+    "Type of covariance": "diag",
+    "BIC score": -1391.0283927680698
+}
+
+lichess_db_ol4_p14.json: 
+Side: White
+Openings recorded = 2256 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -7754.524068441018
+}
+
+lichess_db_ol4_p16.json: 
+Side: White
+Openings recorded = 2299 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -9256.63683967337
+}
+
+lichess_db_ol4_p18.json: 
+Side: White
+Openings recorded = 1963 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -7466.381847097049
+}
+
+lichess_db_ol4_p20.json: 
+Side: White
+Openings recorded = 1729 
+{
+    "Number of components": 9,
+    "Type of covariance": "diag",
+    "BIC score": -6436.964511168699
+}
+
+lichess_db_ol5_p2.json: 
+Side: White
+Openings recorded = 2596 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -6239.895839399224
+}
+
+lichess_db_ol5_p4.json: 
+Side: White
+Openings recorded = 2001 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": -4901.052139246314
+}
+
+lichess_db_ol5_p6.json: 
+Side: White
+Openings recorded = 1097 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": -2379.3331804826425
+}
+
+lichess_db_ol5_p8.json: 
+Side: White
+Openings recorded = 721 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -1386.1184078666283
+}
+
+lichess_db_ol5_p10.json: 
+Side: White
+Openings recorded = 495 
+{
+    "Number of components": 12,
+    "Type of covariance": "diag",
+    "BIC score": -421.0254278076982
+}
+
+lichess_db_ol5_p12.json: 
+Side: White
+Openings recorded = 946 
+{
+    "Number of components": 11,
+    "Type of covariance": "diag",
+    "BIC score": -892.7623334046411
+}
+
+lichess_db_ol5_p14.json: 
+Side: White
+Openings recorded = 726 
+{
+    "Number of components": 5,
+    "Type of covariance": "diag",
+    "BIC score": 432.21535524988565
+}
+
+lichess_db_ol5_p16.json: 
+Side: White
+Openings recorded = 697 
+{
+    "Number of components": 5,
+    "Type of covariance": "diag",
+    "BIC score": 318.1512852994876
+}
+
+lichess_db_ol5_p18.json: 
+Side: White
+Openings recorded = 541 
+{
+    "Number of components": 5,
+    "Type of covariance": "diag",
+    "BIC score": 193.26387203803552
+}
+
+lichess_db_ol5_p20.json: 
+Side: White
+Openings recorded = 582 
+{
+    "Number of components": 5,
+    "Type of covariance": "diag",
+    "BIC score": 131.9395320161342
+}
+
+lichess_db_ol6_p2.json: 
+Side: White
+Openings recorded = 947 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -533.9502348027954
+}
+
+lichess_db_ol6_p4.json: 
+Side: White
+Openings recorded = 2818 
+{
+    "Number of components": 14,
+    "Type of covariance": "diag",
+    "BIC score": -3046.979279030447
+}
+
+lichess_db_ol6_p6.json: 
+Side: White
+Openings recorded = 1964 
+{
+    "Number of components": 11,
+    "Type of covariance": "diag",
+    "BIC score": -812.8209188450076
+}
+
+lichess_db_ol6_p8.json: 
+Side: White
+Openings recorded = 1591 
+{
+    "Number of components": 8,
+    "Type of covariance": "diag",
+    "BIC score": -1287.8750181063929
+}
+
+lichess_db_ol6_p10.json: 
+Side: White
+Openings recorded = 1310 
+{
+    "Number of components": 8,
+    "Type of covariance": "diag",
+    "BIC score": 21.289354665197152
+}
+
+lichess_db_ol6_p12.json: 
+Side: White
+Openings recorded = 1160 
+{
+    "Number of components": 8,
+    "Type of covariance": "diag",
+    "BIC score": 175.50311307082572
+}
+
+lichess_db_ol6_p14.json: 
+Side: White
+Openings recorded = 1013 
+{
+    "Number of components": 4,
+    "Type of covariance": "diag",
+    "BIC score": 1572.4644224191181
+}
+
+lichess_db_ol6_p16.json: 
+Side: White
+Openings recorded = 901 
+{
+    "Number of components": 3,
+    "Type of covariance": "diag",
+    "BIC score": 1905.7496837716712
+}
+
+lichess_db_ol6_p18.json: 
+Side: White
+Openings recorded = 811 
+{
+    "Number of components": 5,
+    "Type of covariance": "diag",
+    "BIC score": 1940.9654046382377
+}
+
+lichess_db_ol6_p20.json: 
+Side: White
+Openings recorded = 755 
+{
+    "Number of components": 3,
+    "Type of covariance": "diag",
+    "BIC score": 1670.0878940121597
+}
+
+lichess_db_ol7_p2.json: 
+Side: White
+Openings recorded = 2827 
+{
+    "Number of components": 10,
+    "Type of covariance": "diag",
+    "BIC score": 844.4846469819261
+}
+
+lichess_db_ol7_p4.json: 
+Side: White
+Openings recorded = 1429 
+{
+    "Number of components": 5,
+    "Type of covariance": "diag",
+    "BIC score": 1425.9533216810091
+}
+
+lichess_db_ol7_p6.json: 
+Side: White
+Openings recorded = 1041 
+{
+    "Number of components": 10,
+    "Type of covariance": "diag",
+    "BIC score": 941.0113153595117
+}
+
+lichess_db_ol7_p8.json: 
+Side: White
+Openings recorded = 776 
+{
+    "Number of components": 3,
+    "Type of covariance": "diag",
+    "BIC score": 1740.7558183404617
+}
+
+lichess_db_ol7_p10.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol7_p12.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol7_p14.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol7_p16.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol7_p18.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol7_p20.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p2.json: 
+Side: White
+Openings recorded = 1191 
+{
+    "Number of components": 13,
+    "Type of covariance": "diag",
+    "BIC score": 835.4439647950414
+}
+
+lichess_db_ol8_p4.json: 
+Side: White
+Openings recorded = 761 
+{
+    "Number of components": 7,
+    "Type of covariance": "diag",
+    "BIC score": 1269.2751974095918
+}
+
+lichess_db_ol8_p6.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p8.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p10.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p12.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p14.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p16.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p18.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol8_p20.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p2.json: 
+Side: White
+Openings recorded = 798 
+{
+    "Number of components": 4,
+    "Type of covariance": "diag",
+    "BIC score": 1787.484073045754
+}
+
+lichess_db_ol9_p4.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p6.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p8.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p10.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p12.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p14.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p16.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p18.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol9_p20.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p2.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p4.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p6.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p8.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p10.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p12.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p14.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p16.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p18.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data
+
+lichess_db_ol10_p20.json: 
+Side: White
+Openings recorded = 0 
+Not enough openings to cluster data

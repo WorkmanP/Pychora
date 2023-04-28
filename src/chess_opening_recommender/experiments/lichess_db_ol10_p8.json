@@ -1,0 +1,45 @@
+{
+    "Opening Length": 10,
+    "Sample Rate": 8,
+    "Openings": [
+        {
+            "Bitboard String": "4eb00/e4010200000000/11/2100000000000000/2/1800000000/20004/410000000000000/8/800000000000000/40/4000000000000000/00",
+            "Most Common Opening White": "e2e4|g1f3|f1b5|b5a4|e1g1|f1e1|a4b3|c2c3|e4d5|f3e5|",
+            "Most Common Opening Black": "e7e5|b8c6|a7a6|g8f6|f8e7|b7b5|e8g8|d7d5|f6d5|c6e5|",
+            "White Opening Values": [
+                0.04666666666666667,
+                0.3933333333333333,
+                1.0,
+                2.4975,
+                0.0,
+                3.33
+            ],
+            "Black Opening Values": [
+                0.04666666666666667,
+                0.5733333333333334,
+                6.1,
+                0.0,
+                0.0,
+                9.43
+            ],
+            "2400+ Results": [
+                84,
+                36,
+                4,
+                44
+            ],
+            "1800+ Results": [
+                21,
+                9,
+                2,
+                10
+            ],
+            "Total Results": [
+                150,
+                63,
+                7,
+                80
+            ]
+        }
+    ]
+}
