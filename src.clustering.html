@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module clustering</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>clustering</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cpa280%5Conedrive%5Cdesktop%5Cuni%5Cecm3401_project%5Cproject%5Cchess_opening_recommender%5Csrc%5Cclustering.py">c:\users\pa280\onedrive\desktop\uni\ecm3401_project\project\chess_opening_recommender\src\clustering.py</a></font></td></tr></table>
+    <p><tt>Contains&nbsp;all&nbsp;the&nbsp;files&nbsp;relating&nbsp;to&nbsp;clustering&nbsp;the&nbsp;data,&nbsp;and&nbsp;utilising&nbsp;the&nbsp;clusters<br>
+to&nbsp;recommend&nbsp;chess&nbsp;games</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="json.html">json</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="pandas.html">pandas</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-closests_to_geo_median"><strong>closests_to_geo_median</strong></a>(user_openings: List[src.opening.Opening], all_openings: List[src.opening.Opening], rec_quant: int, cluster_dim_limits: List[List[float]], color: bool) -&gt; List[src.opening.Opening]</dt><dd><tt>Find&nbsp;openings&nbsp;not&nbsp;used&nbsp;by&nbsp;the&nbsp;user&nbsp;which&nbsp;are&nbsp;closest&nbsp;to&nbsp;the&nbsp;geometric<br>
+median&nbsp;of&nbsp;the&nbsp;values&nbsp;of&nbsp;the&nbsp;weighted&nbsp;openings&nbsp;used&nbsp;by&nbsp;the&nbsp;user</tt></dd></dl>
+ <dl><dt><a name="-cluster_data"><strong>cluster_data</strong></a>(clust_file: str, color: bool, num_components: int = 0) -&gt; Union[sklearn.mixture._gaussian_mixture.GaussianMixture, NoneType]</dt><dd><tt>Create&nbsp;a&nbsp;Gaussian&nbsp;mixture&nbsp;model&nbsp;using&nbsp;the&nbsp;data&nbsp;within&nbsp;a&nbsp;cluster&nbsp;file&nbsp;and&nbsp;a<br>
+players&nbsp;color.&nbsp;Can&nbsp;manually&nbsp;select&nbsp;the&nbsp;number&nbsp;of&nbsp;components</tt></dd></dl>
+ <dl><dt><a name="-cluster_test"><strong>cluster_test</strong></a>(clust_file: str, data_file: str, color: bool)</dt><dd><tt>Test&nbsp;file&nbsp;for&nbsp;clustering</tt></dd></dl>
+ <dl><dt><a name="-create_clustering"><strong>create_clustering</strong></a>(data_set: numpy.ndarray, components: int, convariance_type: str) -&gt; sklearn.mixture._gaussian_mixture.GaussianMixture</dt><dd><tt>Create&nbsp;a&nbsp;clustering&nbsp;model&nbsp;on&nbsp;a&nbsp;data&nbsp;set&nbsp;for&nbsp;a&nbsp;covariance&nbsp;type&nbsp;and&nbsp;a&nbsp;number&nbsp;of&nbsp;clusters</tt></dd></dl>
+ <dl><dt><a name="-dicts_to_openings"><strong>dicts_to_openings</strong></a>(dict_list: List[Dict[str, Any]]) -&gt; List[src.opening.Opening]</dt><dd><tt>Convert&nbsp;a&nbsp;list&nbsp;of&nbsp;dict&nbsp;interpreations&nbsp;of&nbsp;openings&nbsp;into&nbsp;an&nbsp;opening&nbsp;list</tt></dd></dl>
+ <dl><dt><a name="-extract_openings"><strong>extract_openings</strong></a>(openings: List[src.opening.Opening], color: bool, weighting: float = 0) -&gt; numpy.ndarray</dt><dd><tt>Convert&nbsp;a&nbsp;list&nbsp;of&nbsp;openings&nbsp;into&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;values&nbsp;for&nbsp;each&nbsp;opening</tt></dd></dl>
+ <dl><dt><a name="-find_distance"><strong>find_distance</strong></a>(point_data: List[float], data_points: List[List[float]], weights: List[int]) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;total&nbsp;distance&nbsp;between&nbsp;two&nbsp;points&nbsp;on&nbsp;a&nbsp;graph&nbsp;with&nbsp;the&nbsp;same&nbsp;dimensions</tt></dd></dl>
+ <dl><dt><a name="-find_fitting_openings"><strong>find_fitting_openings</strong></a>(cluster_model: sklearn.mixture._gaussian_mixture.GaussianMixture, users_opening_file: str, large_game_file: str, color: bool, recommendations: int = 10) -&gt; List[src.opening.Opening]</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;recommended&nbsp;openings&nbsp;within&nbsp;a&nbsp;opening&nbsp;database&nbsp;for&nbsp;a&nbsp;user&nbsp;repertoire</tt></dd></dl>
+ <dl><dt><a name="-find_recommended_openings"><strong>find_recommended_openings</strong></a>(user_openings_in_clusters: List[List[src.opening.Opening]], all_openings_in_clusters: List[List[src.opening.Opening]], rec_openings_per_cluster: List[int], color: bool) -&gt; List[src.opening.Opening]</dt><dd><tt>Find&nbsp;the&nbsp;recommended&nbsp;openings&nbsp;for&nbsp;a&nbsp;users&nbsp;openings&nbsp;within&nbsp;clusters,&nbsp;all&nbsp;openings<br>
+in&nbsp;clusters,&nbsp;and&nbsp;with&nbsp;the&nbsp;ammount&nbsp;of&nbsp;reccommended&nbsp;openings&nbsp;per&nbsp;cluster</tt></dd></dl>
+ <dl><dt><a name="-get_bic_score"><strong>get_bic_score</strong></a>(data_set: numpy.ndarray) -&gt; pandas.core.frame.DataFrame</dt><dd><tt>Get&nbsp;the&nbsp;best&nbsp;BIC&nbsp;scoring&nbsp;number&nbsp;of&nbsp;clusters&nbsp;and&nbsp;covariance&nbsp;type&nbsp;for&nbsp;a&nbsp;dataset</tt></dd></dl>
+ <dl><dt><a name="-get_cluster_dim_limits"><strong>get_cluster_dim_limits</strong></a>(openings_in_clusters: List[List[src.opening.Opening]], color) -&gt; List[List[List[float]]]</dt><dd><tt>Returns&nbsp;the&nbsp;minimum&nbsp;and&nbsp;maximum&nbsp;for&nbsp;each&nbsp;dimension&nbsp;for&nbsp;each&nbsp;cluster</tt></dd></dl>
+ <dl><dt><a name="-get_cluster_game_counts"><strong>get_cluster_game_counts</strong></a>(openings_in_clusters: List[List[src.opening.Opening]]) -&gt; List[int]</dt><dd><tt>Get&nbsp;the&nbsp;amount&nbsp;of&nbsp;games&nbsp;played&nbsp;within&nbsp;a&nbsp;cluster</tt></dd></dl>
+ <dl><dt><a name="-get_geometric_median"><strong>get_geometric_median</strong></a>(values_list: List[List[float]], weights: List[int], epsillon: float = 1e-05) -&gt; List[float]</dt><dd><tt>Calculate&nbsp;the&nbsp;geometric&nbsp;median&nbsp;for&nbsp;a&nbsp;set&nbsp;of&nbsp;values&nbsp;and&nbsp;weights.<br>
+This&nbsp;method&nbsp;is&nbsp;an&nbsp;altered&nbsp;version&nbsp;of&nbsp;the&nbsp;one&nbsp;found&nbsp;here:&nbsp;https://stackoverflow.com/a/30305181<br>
+which&nbsp;is&nbsp;based&nbsp;on&nbsp;the&nbsp;algorithm&nbsp;found&nbsp;here:&nbsp;https://www.pnas.org/doi/pdf/10.1073/pnas.97.4.1423<br>
+&nbsp;<br>
+The&nbsp;function&nbsp;is&nbsp;altered&nbsp;to&nbsp;allow&nbsp;the&nbsp;implementaion&nbsp;of&nbsp;weights&nbsp;for&nbsp;each&nbsp;point</tt></dd></dl>
+ <dl><dt><a name="-get_openings_in_clusters"><strong>get_openings_in_clusters</strong></a>(cluster_model: sklearn.mixture._gaussian_mixture.GaussianMixture, openings: List[src.opening.Opening], color: bool) -&gt; List[List[src.opening.Opening]]</dt><dd><tt>Put&nbsp;each&nbsp;opening&nbsp;into&nbsp;its&nbsp;correstponding&nbsp;cluster&nbsp;index&nbsp;in&nbsp;a&nbsp;list</tt></dd></dl>
+ <dl><dt><a name="-get_valid_openings"><strong>get_valid_openings</strong></a>(all_openings: List[src.opening.Opening], user_openings: List[src.opening.Opening], color: bool) -&gt; List[src.opening.Opening]</dt><dd><tt>Get&nbsp;openings&nbsp;from&nbsp;a&nbsp;list&nbsp;of&nbsp;openings&nbsp;that&nbsp;aren't&nbsp;part&nbsp;of&nbsp;the&nbsp;users&nbsp;openings<br>
+and&nbsp;that&nbsp;have&nbsp;a&nbsp;&gt;40%&nbsp;chance&nbsp;of&nbsp;not&nbsp;losing</tt></dd></dl>
+ <dl><dt><a name="-gmm_BIC_scorer"><strong>gmm_BIC_scorer</strong></a>(estimator: sklearn.mixture._gaussian_mixture.GaussianMixture, X)</dt><dd><tt>Use&nbsp;the&nbsp;SCI-Learn&nbsp;method&nbsp;to&nbsp;return&nbsp;the&nbsp;BIC&nbsp;values</tt></dd></dl>
+ <dl><dt><a name="-jefferson_share_method"><strong>jefferson_share_method</strong></a>(clusts_and_counts: List[int], number_of_recommendations: int) -&gt; List[int]</dt><dd><tt>Use&nbsp;the&nbsp;sharing&nbsp;method&nbsp;devised&nbsp;by&nbsp;jefferson&nbsp;to&nbsp;distribute&nbsp;the&nbsp;amount&nbsp;of&nbsp;recommendations<br>
+between&nbsp;the&nbsp;clusters&nbsp;based&nbsp;on&nbsp;the&nbsp;amount&nbsp;of&nbsp;games&nbsp;shared.&nbsp;Information&nbsp;on&nbsp;the&nbsp;method&nbsp;can<br>
+be&nbsp;found&nbsp;here:<br>
+https://math.libretexts.org/Bookshelves/Applied_Mathematics/Math_in_Society_(Lippman)/04:_Apportionment/4.03:_Jeffersons_Method</tt></dd></dl>
+ <dl><dt><a name="-json_to_dicts"><strong>json_to_dicts</strong></a>(in_file: str) -&gt; List[Dict[str, Union[str, List[Union[int, float]]]]]</dt><dd><tt>Converts&nbsp;Bitboard&nbsp;JSON&nbsp;object&nbsp;into&nbsp;Dict&nbsp;of&nbsp;data</tt></dd></dl>
+ <dl><dt><a name="-lowest_dists_in_cluster"><strong>lowest_dists_in_cluster</strong></a>(user_openings: List[src.opening.Opening], all_openings: List[src.opening.Opening], rec_quant: int, cluster_dim_limits: List[List[float]], color: bool) -&gt; List[src.opening.Opening]</dt><dd><tt>Find&nbsp;the&nbsp;best&nbsp;given&nbsp;number&nbsp;openings&nbsp;for&nbsp;a&nbsp;cluster&nbsp;for&nbsp;a&nbsp;user&nbsp;repertoire<br>
+from&nbsp;a&nbsp;large&nbsp;opening&nbsp;database</tt></dd></dl>
+ <dl><dt><a name="-normalise_values"><strong>normalise_values</strong></a>(values: List[Union[int, float]], dimensions: List[List[float]])</dt><dd><tt>Change&nbsp;the&nbsp;values&nbsp;of&nbsp;an&nbsp;opening&nbsp;to&nbsp;be&nbsp;between&nbsp;0-1&nbsp;for&nbsp;a&nbsp;given&nbsp;cluster</tt></dd></dl>
+ <dl><dt><a name="-plot_points"><strong>plot_points</strong></a>(openings: List[src.opening.Opening], color: bool, dest: str, b_f_name: str, prop_sizing: bool = False) -&gt; int</dt><dd><tt>Plot&nbsp;the&nbsp;values&nbsp;for&nbsp;each&nbsp;opening&nbsp;on&nbsp;each&nbsp;unique&nbsp;parings&nbsp;of&nbsp;openings.&nbsp;Does&nbsp;not&nbsp;color<br>
+points&nbsp;depending&nbsp;on&nbsp;clusters</tt></dd></dl>
+ <dl><dt><a name="-plot_points_in_clusters"><strong>plot_points_in_clusters</strong></a>(clust_model: sklearn.mixture._gaussian_mixture.GaussianMixture, color: bool, points_file: str, dest: str = 'plots', prop_sizing: bool = False) -&gt; int</dt><dd><tt>Plot&nbsp;openings&nbsp;from&nbsp;a&nbsp;JSON&nbsp;file&nbsp;against&nbsp;a&nbsp;Gaussian&nbsp;model&nbsp;for&nbsp;a&nbsp;given&nbsp;chess&nbsp;players&nbsp;color.<br>
+Each&nbsp;opening&nbsp;is&nbsp;colored&nbsp;according&nbsp;to&nbsp;its&nbsp;cluster&nbsp;given&nbsp;by&nbsp;a&nbsp;cluster&nbsp;model&nbsp;argument.</tt></dd></dl>
+ <dl><dt><a name="-plot_recommendations"><strong>plot_recommendations</strong></a>(user_openings: List[src.opening.Opening], other_openings: List[src.opening.Opening], color: bool, dimensions: List[List[Union[int, float]]], x_i: int, y_i: int, dest: str, b_f_name: str, prop_sizing: bool = False)</dt><dd><tt>Plot&nbsp;the&nbsp;users&nbsp;openings&nbsp;and&nbsp;other&nbsp;openings&nbsp;on&nbsp;the&nbsp;same&nbsp;graph.<br>
+User&nbsp;openings&nbsp;will&nbsp;appear&nbsp;in&nbsp;fuchsia&nbsp;and&nbsp;the&nbsp;other&nbsp;openings&nbsp;will&nbsp;appear&nbsp;in&nbsp;orange</tt></dd></dl>
+ <dl><dt><a name="-process_clustering"><strong>process_clustering</strong></a>(clust_file: str, user_file: str, export: Union[str, NoneType], clust_count: Union[int, NoneType], color: Union[bool, NoneType])</dt><dd><tt>Call&nbsp;all&nbsp;relevent&nbsp;functions&nbsp;to&nbsp;recommend&nbsp;a&nbsp;set&nbsp;of&nbsp;openings&nbsp;for&nbsp;any&nbsp;or&nbsp;both<br>
+colors</tt></dd></dl>
+ <dl><dt><a name="-process_for_color"><strong>process_for_color</strong></a>(clust_file: str, user_file: str, export_dest: Union[str, NoneType], clust_count: Union[int, NoneType], color: bool)</dt><dd><tt>Call&nbsp;all&nbsp;relevent&nbsp;functions&nbsp;to&nbsp;recommend&nbsp;a&nbsp;set&nbsp;of&nbsp;openings&nbsp;for&nbsp;a&nbsp;specific&nbsp;color</tt></dd></dl>
+ <dl><dt><a name="-read_opening_data"><strong>read_opening_data</strong></a>(opening: src.opening.Opening, color: bool) -&gt; List[float]</dt><dd><tt>Gets&nbsp;to&nbsp;values&nbsp;for&nbsp;the&nbsp;opening&nbsp;for&nbsp;a&nbsp;opening&nbsp;and&nbsp;a&nbsp;color</tt></dd></dl>
+ <dl><dt><a name="-sqrt"><strong>sqrt</strong></a>(x, /)</dt><dd><tt>Return&nbsp;the&nbsp;square&nbsp;root&nbsp;of&nbsp;x.</tt></dd></dl>
+ <dl><dt><a name="-verify_clustering_inputs"><strong>verify_clustering_inputs</strong></a>(args: List[str]) -&gt; List[Any]</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>AXIS_NAMES</strong> = ['Pawn Structure Evaluation', 'Points of Material on Centre Squares', 'Left Side Material Worth', 'Right Side Material Worth']<br>
+<strong>AXIS_NAMES_SHORT</strong> = ['Pawn', 'Centre', 'Left', 'Right']<br>
+<strong>Any</strong> = typing.Any<br>
+<strong>BLACK</strong> = False<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Union</strong> = typing.Union<br>
+<strong>WHITE</strong> = True<br>
+<strong>__annotations__</strong> = {}</td></tr></table>
+</body></html>

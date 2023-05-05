@@ -1,2 +1,3 @@
 .vscode/*
-src/chess_opening_recommender/game_databases/*
+res/*
+src/exp_data/*

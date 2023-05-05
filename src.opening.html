@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module opening</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>opening</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cpa280%5Conedrive%5Cdesktop%5Cuni%5Cecm3401_project%5Cproject%5Cchess_opening_recommender%5Csrc%5Copening.py">c:\users\pa280\onedrive\desktop\uni\ecm3401_project\project\chess_opening_recommender\src\opening.py</a></font></td></tr></table>
+    <p><tt>Class&nbsp;contianing&nbsp;the&nbsp;methods&nbsp;and&nbsp;values&nbsp;relating&nbsp;to&nbsp;the&nbsp;openings&nbsp;from&nbsp;each&nbsp;player</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="opening.html#Opening">Opening</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Opening">class <strong>Opening</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Opening">Opening</a>()&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Class&nbsp;containing&nbsp;all&nbsp;information&nbsp;relating&nbsp;to&nbsp;openings&nbsp;for&nbsp;storage&nbsp;and&nbsp;evaluation<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Opening-__eq__"><strong>__eq__</strong></a>(self, _Opening__value: object) -&gt; bool</dt><dd><tt>Return&nbsp;self==value.</tt></dd></dl>
+
+<dl><dt><a name="Opening-__init__"><strong>__init__</strong></a>(self) -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Opening-add_to_results_1800"><strong>add_to_results_1800</strong></a>(self, other_results: List[int]) -&gt; int</dt><dd><tt>Increment&nbsp;the&nbsp;results&nbsp;for&nbsp;1800+&nbsp;ratings&nbsp;for&nbsp;another&nbsp;result</tt></dd></dl>
+
+<dl><dt><a name="Opening-add_to_results_2400"><strong>add_to_results_2400</strong></a>(self, other_results: List[int]) -&gt; int</dt><dd><tt>Increment&nbsp;the&nbsp;results&nbsp;for&nbsp;2400+&nbsp;ratings&nbsp;for&nbsp;another&nbsp;result</tt></dd></dl>
+
+<dl><dt><a name="Opening-add_to_results_total"><strong>add_to_results_total</strong></a>(self, other_results: List[int]) -&gt; int</dt><dd><tt>Increment&nbsp;the&nbsp;results&nbsp;&nbsp;for&nbsp;another&nbsp;result</tt></dd></dl>
+
+<dl><dt><a name="Opening-attach_bitboard"><strong>attach_bitboard</strong></a>(self, bitboard: src.bitboard.FullBitboard) -&gt; None</dt><dd><tt>Create&nbsp;the&nbsp;bitboard&nbsp;for&nbsp;a&nbsp;given&nbsp;opening&nbsp;and&nbsp;its&nbsp;transpositions</tt></dd></dl>
+
+<dl><dt><a name="Opening-from_dict"><strong>from_dict</strong></a>(self, dictionary: Dict[str, Any]) -&gt; bool</dt><dd><tt>Convert&nbsp;an&nbsp;opening&nbsp;represented&nbsp;as&nbsp;a&nbsp;dictionary&nbsp;into&nbsp;an&nbsp;opening&nbsp;type<br>
+&nbsp;<br>
+@return:<br>
+bool&nbsp;:&nbsp;Determines&nbsp;whether&nbsp;an&nbsp;error&nbsp;occured.</tt></dd></dl>
+
+<dl><dt><a name="Opening-get_most_common_opening"><strong>get_most_common_opening</strong></a>(self, color: bool) -&gt; str</dt><dd><tt>Find&nbsp;the&nbsp;most&nbsp;common&nbsp;opening&nbsp;for&nbsp;a&nbsp;color&nbsp;and&nbsp;return&nbsp;the&nbsp;string</tt></dd></dl>
+
+<dl><dt><a name="Opening-process_bitboard_values"><strong>process_bitboard_values</strong></a>(self) -&gt; None</dt><dd><tt>Get&nbsp;the&nbsp;values&nbsp;for&nbsp;a&nbsp;game&nbsp;based&nbsp;on&nbsp;the&nbsp;values&nbsp;given&nbsp;at&nbsp;the&nbsp;top&nbsp;of&nbsp;this&nbsp;file</tt></dd></dl>
+
+<dl><dt><a name="Opening-process_game_data"><strong>process_game_data</strong></a>(self, game: chess.pgn.Game, op_len: int) -&gt; int</dt><dd><tt>Process&nbsp;the&nbsp;information&nbsp;about&nbsp;the&nbsp;game&nbsp;from&nbsp;the&nbsp;pgn&nbsp;file</tt></dd></dl>
+
+<dl><dt><a name="Opening-process_opening_moves"><strong>process_opening_moves</strong></a>(self, game: chess.pgn.Game, op_len: int) -&gt; None</dt><dd><tt>Find&nbsp;what&nbsp;a&nbsp;set&nbsp;of&nbsp;opening</tt></dd></dl>
+
+<dl><dt><a name="Opening-to_dict"><strong>to_dict</strong></a>(self) -&gt; Dict[str, Union[str, List[int], List[float]]]</dt><dd><tt>Converts&nbsp;an&nbsp;opening&nbsp;type&nbsp;to&nbsp;a&nbsp;dictionary&nbsp;type.&nbsp;All&nbsp;but&nbsp;the&nbsp;most&nbsp;used<br>
+opening&nbsp;is&nbsp;lost&nbsp;during&nbsp;this&nbsp;process&nbsp;however<br>
+&nbsp;<br>
+@return:<br>
+Dict&nbsp;:&nbsp;contains&nbsp;keys:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'Most&nbsp;Common&nbsp;<a href="#Opening">Opening</a>&nbsp;[White/Black]'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'[White/Black]&nbsp;<a href="#Opening">Opening</a>&nbsp;Values'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'[2400+/1800+/Total]&nbsp;Results'</tt></dd></dl>
+
+<dl><dt><a name="Opening-update_uci_transpositions"><strong>update_uci_transpositions</strong></a>(self, white_moves: str, black_moves: str)</dt><dd><tt>Process&nbsp;the&nbsp;opening&nbsp;moves&nbsp;and&nbsp;add&nbsp;them&nbsp;to&nbsp;the&nbsp;count</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-check_opening_in_list"><strong>check_opening_in_list</strong></a>(check_opening: opening.Opening, opening_list: List[opening.Opening]) -&gt; bool</dt><dd><tt>Check&nbsp;if&nbsp;an&nbsp;opening&nbsp;appears&nbsp;in&nbsp;a&nbsp;list&nbsp;of&nbsp;openings</tt></dd></dl>
+ <dl><dt><a name="-get_centre_prev"><strong>get_centre_prev</strong></a>(opening: opening.Opening, color: bool) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;value&nbsp;for&nbsp;the&nbsp;piece&nbsp;prevalence&nbsp;in&nbsp;the&nbsp;centre</tt></dd></dl>
+ <dl><dt><a name="-get_developed_pieces"><strong>get_developed_pieces</strong></a>(opening: opening.Opening, color: bool) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;total&nbsp;value&nbsp;of&nbsp;the&nbsp;pieces&nbsp;that&nbsp;are&nbsp;not&nbsp;on&nbsp;the&nbsp;back&nbsp;rank</tt></dd></dl>
+ <dl><dt><a name="-get_draw_rate"><strong>get_draw_rate</strong></a>(opening: opening.Opening, color: bool) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;rate&nbsp;that&nbsp;an&nbsp;opening&nbsp;draws</tt></dd></dl>
+ <dl><dt><a name="-get_left_side_prev"><strong>get_left_side_prev</strong></a>(opening: opening.Opening, color: bool) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;value&nbsp;for&nbsp;the&nbsp;prevalence&nbsp;of&nbsp;the&nbsp;pieces&nbsp;on&nbsp;the&nbsp;left&nbsp;side&nbsp;of&nbsp;the&nbsp;board</tt></dd></dl>
+ <dl><dt><a name="-get_pawn_structure"><strong>get_pawn_structure</strong></a>(opening: opening.Opening, color: bool) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;pawn&nbsp;structure&nbsp;for&nbsp;the&nbsp;given&nbsp;side</tt></dd></dl>
+ <dl><dt><a name="-get_right_side_prev"><strong>get_right_side_prev</strong></a>(opening: opening.Opening, color: bool) -&gt; float</dt><dd><tt>Get&nbsp;the&nbsp;value&nbsp;for&nbsp;the&nbsp;prevalence&nbsp;of&nbsp;the&nbsp;pieces&nbsp;on&nbsp;the&nbsp;right&nbsp;side&nbsp;of&nbsp;the&nbsp;board</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>AXIS_FUNCTIONS</strong> = [&lt;function get_pawn_structure&gt;, &lt;function get_centre_prev&gt;, &lt;function get_left_side_prev&gt;, &lt;function get_right_side_prev&gt;]<br>
+<strong>AXIS_NAMES</strong> = ['Pawn Structure Evaluation', 'Points of Material on Centre Squares', 'Left Side Material Worth', 'Right Side Material Worth']<br>
+<strong>AXIS_NAMES_SHORT</strong> = ['Pawn', 'Centre', 'Left', 'Right']<br>
+<strong>Any</strong> = typing.Any<br>
+<strong>BLACK</strong> = False<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Union</strong> = typing.Union<br>
+<strong>WHITE</strong> = True</td></tr></table>
+</body></html>

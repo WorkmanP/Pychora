@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module process_database</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>process_database</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cpa280%5Conedrive%5Cdesktop%5Cuni%5Cecm3401_project%5Cproject%5Cchess_opening_recommender%5Csrc%5Cprocess_database.py">c:\users\pa280\onedrive\desktop\uni\ecm3401_project\project\chess_opening_recommender\src\process_database.py</a></font></td></tr></table>
+    <p><tt>Contains&nbsp;Simple&nbsp;Repertoire&nbsp;class&nbsp;and&nbsp;all&nbsp;functions&nbsp;relating&nbsp;to&nbsp;processing&nbsp;of&nbsp;a&nbsp;PGN&nbsp;database</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="chess.html">chess</a><br>
+<a href="glob.html">glob</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+<a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-ceil"><strong>ceil</strong></a>(x, /)</dt><dd><tt>Return&nbsp;the&nbsp;ceiling&nbsp;of&nbsp;x&nbsp;as&nbsp;an&nbsp;Integral.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;the&nbsp;smallest&nbsp;integer&nbsp;&gt;=&nbsp;x.</tt></dd></dl>
+ <dl><dt><a name="-combine_dicts"><strong>combine_dicts</strong></a>(dicts: List[Dict[Any, Any]]) -&gt; Dict[Any, Any]</dt><dd><tt>Combine&nbsp;a&nbsp;list&nbsp;of&nbsp;dictionaries&nbsp;into&nbsp;a&nbsp;single&nbsp;dictionary,&nbsp;prioritises&nbsp;later&nbsp;dictionary<br>
+values&nbsp;where&nbsp;keys&nbsp;match.&nbsp;DO&nbsp;NOT&nbsp;USE&nbsp;FOR&nbsp;COMBINING&nbsp;LISTS&nbsp;OF&nbsp;OPENINGS</tt></dd></dl>
+ <dl><dt><a name="-combine_opening_dicts"><strong>combine_opening_dicts</strong></a>(dicts: List[Dict[str, src.opening.Opening]]) -&gt; Dict[str, src.opening.Opening]</dt><dd><tt>Combine&nbsp;dicts&nbsp;of&nbsp;openings&nbsp;together,&nbsp;making&nbsp;sure&nbsp;that&nbsp;the&nbsp;total&nbsp;results&nbsp;between<br>
+openings&nbsp;are&nbsp;transfered&nbsp;into&nbsp;the&nbsp;final&nbsp;dict</tt></dd></dl>
+ <dl><dt><a name="-process_database"><strong>process_database</strong></a>(pgn_db: str, dest: str, min_proportion: float = 3e-05, opening_length: int = 6, max_games: int = 10000000)</dt><dd><tt>Main&nbsp;function&nbsp;which&nbsp;processes&nbsp;and&nbsp;converts&nbsp;a&nbsp;PGN&nbsp;database&nbsp;into&nbsp;a&nbsp;opening&nbsp;JSON&nbsp;database<br>
+&nbsp;<br>
+@params<br>
+pgn_db:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;path&nbsp;of&nbsp;a&nbsp;pgn&nbsp;database<br>
+dest:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;destination&nbsp;of&nbsp;the&nbsp;JSON&nbsp;opening&nbsp;database<br>
+min_proportion:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;minimum&nbsp;proportion&nbsp;of&nbsp;games&nbsp;each&nbsp;opening&nbsp;must&nbsp;have&nbsp;to&nbsp;be&nbsp;recorded<br>
+opening_length:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;amount&nbsp;of&nbsp;moves&nbsp;per&nbsp;player&nbsp;to&nbsp;be&nbsp;counted&nbsp;as&nbsp;the&nbsp;opening&nbsp;stage<br>
+max_games:&nbsp;&nbsp;The&nbsp;maximum&nbsp;amount&nbsp;of&nbsp;games&nbsp;to&nbsp;be&nbsp;processed<br>
+max_threads:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;maximum&nbsp;amount&nbsp;of&nbsp;threads&nbsp;for&nbsp;multiprocessing</tt></dd></dl>
+ <dl><dt><a name="-process_openings"><strong>process_openings</strong></a>(pgn_db: str, chosen_openings: Dict[str, int], op_len: int, max_games: int) -&gt; Dict[str, src.opening.Opening]</dt><dd><tt>Convert&nbsp;each&nbsp;opening&nbsp;within&nbsp;a&nbsp;dict&nbsp;of&nbsp;opening&nbsp;strings&nbsp;into&nbsp;an&nbsp;Opening&nbsp;type.&nbsp;A&nbsp;count<br>
+for&nbsp;each&nbsp;time&nbsp;an&nbsp;opening&nbsp;occurs&nbsp;is&nbsp;stored&nbsp;within&nbsp;the&nbsp;opening&nbsp;type<br>
+Used&nbsp;within&nbsp;multithreading</tt></dd></dl>
+ <dl><dt><a name="-remove_old_thread_files"><strong>remove_old_thread_files</strong></a>()</dt><dd><tt>Detele&nbsp;thread&nbsp;files&nbsp;which&nbsp;are&nbsp;in&nbsp;the&nbsp;threads&nbsp;directory</tt></dd></dl>
+ <dl><dt><a name="-retrieve_opening_string"><strong>retrieve_opening_string</strong></a>(game: chess.pgn.Game, op_len: int) -&gt; str</dt><dd><tt>Return&nbsp;the&nbsp;opening&nbsp;string&nbsp;for&nbsp;a&nbsp;chess&nbsp;game.&nbsp;Returns&nbsp;""&nbsp;if&nbsp;not&nbsp;valid</tt></dd></dl>
+ <dl><dt><a name="-sample_openings"><strong>sample_openings</strong></a>(pgn_db: str, min_proportion: int, op_len: int) -&gt; Dict[str, int]</dt><dd><tt>Check&nbsp;the&nbsp;occurance&nbsp;of&nbsp;each&nbsp;opening&nbsp;within&nbsp;a&nbsp;file,&nbsp;then&nbsp;if&nbsp;it&nbsp;is&nbsp;more&nbsp;than<br>
+the&nbsp;minimum&nbsp;proportion,&nbsp;record&nbsp;the&nbsp;opening&nbsp;within&nbsp;a&nbsp;dictionary,&nbsp;along&nbsp;with&nbsp;its<br>
+count.&nbsp;Used&nbsp;within&nbsp;multithreading</tt></dd></dl>
+ <dl><dt><a name="-split_file_for_threads"><strong>split_file_for_threads</strong></a>(pgn_db: str, max_games: int) -&gt; Tuple[List[str], int]</dt><dd><tt>Split&nbsp;a&nbsp;large&nbsp;pgn&nbsp;database&nbsp;file&nbsp;into&nbsp;multiple&nbsp;smaller&nbsp;files&nbsp;to&nbsp;allow&nbsp;for<br>
+multiprocessing</tt></dd></dl>
+ <dl><dt><a name="-verify_process_database_inputs"><strong>verify_process_database_inputs</strong></a>(pgn_db: str, dest: str, min_prop: str, opening_length: str, max_games: str) -&gt; List[Union[str, int, float]]</dt><dd><tt>Check&nbsp;that&nbsp;all&nbsp;of&nbsp;the&nbsp;given&nbsp;values&nbsp;that&nbsp;would&nbsp;go&nbsp;into&nbsp;the&nbsp;process_database<br>
+function&nbsp;are&nbsp;valid.&nbsp;Works&nbsp;with&nbsp;the&nbsp;GUI&nbsp;section</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>AXIS_NAMES_SHORT</strong> = ['Pawn', 'Centre', 'Left', 'Right']<br>
+<strong>Any</strong> = typing.Any<br>
+<strong>CONFIG</strong> = {'DATABASE_MAX_OPENINGS_PROCCESSED': 10000000, 'DATABASE_OPENING_MIN_PROPORTION': 3e-05, 'DATABASE_SAMPLE_SIZE': 200000, 'OPENING_MOVES_PER_PLAYER': 6, 'THREAD_COUNT': 8}<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>Union</strong> = typing.Union<br>
+<strong>__annotations__</strong> = {'CONFIG': typing.Dict[str, typing.Union[int, float]]}</td></tr></table>
+</body></html>

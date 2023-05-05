@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module bitboard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>bitboard</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cpa280%5Conedrive%5Cdesktop%5Cuni%5Cecm3401_project%5Cproject%5Cchess_opening_recommender%5Csrc%5Cbitboard.py">c:\users\pa280\onedrive\desktop\uni\ecm3401_project\project\chess_opening_recommender\src\bitboard.py</a></font></td></tr></table>
+    <p><tt>File&nbsp;containing&nbsp;the&nbsp;Bitboard&nbsp;class&nbsp;and&nbsp;relevent&nbsp;functions&nbsp;to&nbsp;allow&nbsp;FEN&nbsp;conversion<br>
+to&nbsp;bitboard,&nbsp;comparison&nbsp;between&nbsp;chess&nbsp;positions,&nbsp;and&nbsp;evaluation&nbsp;for&nbsp;the&nbsp;chess&nbsp;positions</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="bitboard.html#FullBitboard">FullBitboard</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FullBitboard">class <strong>FullBitboard</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#FullBitboard">FullBitboard</a>()&nbsp;-&amp;gt;&nbsp;'None'<br>
+&nbsp;<br>
+A&nbsp;data&nbsp;structure&nbsp;representing&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;board<br>
+at&nbsp;a&nbsp;given&nbsp;time&nbsp;further&nbsp;reading&nbsp;into&nbsp;bitboards&nbsp;is&nbsp;found<br>
+here:&nbsp;https://www.chessprogramming.org/Bitboards<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="FullBitboard-__eq__"><strong>__eq__</strong></a>(self, other: 'object') -&gt; 'bool'</dt><dd><tt>Override&nbsp;default&nbsp;equality&nbsp;function</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-__init__"><strong>__init__</strong></a>(self) -&gt; 'None'</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-bb_to_store_string"><strong>bb_to_store_string</strong></a>(self) -&gt; 'str'</dt><dd><tt>Convert&nbsp;the&nbsp;bitboard&nbsp;to&nbsp;a&nbsp;string&nbsp;to&nbsp;encode&nbsp;the&nbsp;information&nbsp;in&nbsp;a&nbsp;<br>
+small&nbsp;and&nbsp;concise&nbsp;string&nbsp;for&nbsp;storing&nbsp;information</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-color_equals"><strong>color_equals</strong></a>(self, other: 'FullBitboard', color: 'bool') -&gt; 'bool'</dt><dd><tt>Determines&nbsp;whether&nbsp;the&nbsp;given&nbsp;colors&nbsp;state&nbsp;is&nbsp;the&nbsp;same&nbsp;as&nbsp;another&nbsp;bitboard<br>
+&nbsp;<br>
+@params<br>
+other:&nbsp;Bitboard&nbsp;of&nbsp;another&nbsp;opening<br>
+color:&nbsp;The&nbsp;color&nbsp;of&nbsp;another&nbsp;opening&nbsp;to&nbsp;check&nbsp;against,&nbsp;False&nbsp;=&nbsp;White,&nbsp;True&nbsp;=&nbsp;Black</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-create_from_board"><strong>create_from_board</strong></a>(self, board_state: 'Board') -&gt; 'None'</dt><dd><tt>Create&nbsp;a&nbsp;bitboard&nbsp;from&nbsp;a&nbsp;board&nbsp;state&nbsp;type&nbsp;within&nbsp;python_chess</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-eval_center_prevailence"><strong>eval_center_prevailence</strong></a>(self, color: 'bool') -&gt; 'float'</dt><dd><tt>Evaluate&nbsp;the&nbsp;total&nbsp;amount&nbsp;of&nbsp;pieces&nbsp;can&nbsp;attack&nbsp;each&nbsp;of&nbsp;the&nbsp;centre&nbsp;squares</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-eval_developed_pieces"><strong>eval_developed_pieces</strong></a>(self, color: 'bool') -&gt; 'float'</dt><dd><tt>Get&nbsp;the&nbsp;value&nbsp;of&nbsp;all&nbsp;pieces&nbsp;that&nbsp;have&nbsp;moved&nbsp;from&nbsp;the&nbsp;back&nbsp;ranks&nbsp;<br>
+and&nbsp;are&nbsp;still&nbsp;on&nbsp;the&nbsp;board</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-eval_pawn_structure"><strong>eval_pawn_structure</strong></a>(self, color: 'bool') -&gt; 'float'</dt><dd><tt>Evaluate&nbsp;pawn&nbsp;structure&nbsp;for&nbsp;the&nbsp;given&nbsp;color.&nbsp;Algorithm&nbsp;derived&nbsp;from<br>
+stockfish&nbsp;pawn&nbsp;strength&nbsp;evaluation&nbsp;found&nbsp;at&nbsp;<br>
+https://github.com/official-stockfish/Stockfish/blob/master/src/pawns.cpp</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-eval_side_prevalence"><strong>eval_side_prevalence</strong></a>(self, color: 'bool', side: 'bool') -&gt; 'float'</dt><dd><tt>Evaluate&nbsp;the&nbsp;presence&nbsp;of&nbsp;pieces&nbsp;in&nbsp;one&nbsp;side&nbsp;of&nbsp;the&nbsp;board<br>
+the&nbsp;outermost&nbsp;files&nbsp;are&nbsp;worth&nbsp;1x,&nbsp;second&nbsp;most,&nbsp;0.75x&nbsp;and&nbsp;third&nbsp;most&nbsp;0.5x<br>
+True&nbsp;is&nbsp;left&nbsp;right&nbsp;side&nbsp;of&nbsp;the&nbsp;board</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-eval_total_piece_value"><strong>eval_total_piece_value</strong></a>(self, color: 'bool') -&gt; 'float'</dt><dd><tt>Evaluate&nbsp;the&nbsp;overall&nbsp;static&nbsp;worth&nbsp;of&nbsp;the&nbsp;pieces&nbsp;for&nbsp;a&nbsp;player</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-get_all_piece_bitboard"><strong>get_all_piece_bitboard</strong></a>(self) -&gt; 'Dict[PieceType, int]'</dt><dd><tt>Returns&nbsp;all&nbsp;of&nbsp;pieces&nbsp;bitboards&nbsp;in&nbsp;one&nbsp;dictionary</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-get_color_bitboards"><strong>get_color_bitboards</strong></a>(self, color: 'bool')</dt><dd><tt>Gets&nbsp;the&nbsp;bitbaord&nbsp;of&nbsp;all&nbsp;pieces&nbsp;for&nbsp;a&nbsp;specific&nbsp;color</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-get_one_piece_bitboard"><strong>get_one_piece_bitboard</strong></a>(self, piece_type: 'PieceType') -&gt; 'int'</dt><dd><tt>Gets&nbsp;the&nbsp;bitboard&nbsp;for&nbsp;a&nbsp;specific&nbsp;piece</tt></dd></dl>
+
+<dl><dt><a name="FullBitboard-store_string_to_bb"><strong>store_string_to_bb</strong></a>(self, instring: 'str') -&gt; 'None'</dt><dd><tt>Process&nbsp;a&nbsp;stored&nbsp;bitboard&nbsp;string&nbsp;and&nbsp;attribute&nbsp;the&nbsp;information&nbsp;to&nbsp;this&nbsp;bitboard<br>
+<a href="builtins.html#object">object</a>.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-find_first_piece_pos"><strong>find_first_piece_pos</strong></a>(piece_bb: 'int')</dt><dd><tt>Get&nbsp;the&nbsp;position&nbsp;in&nbsp;the&nbsp;bitboard&nbsp;of&nbsp;the&nbsp;first&nbsp;piece&nbsp;in&nbsp;that&nbsp;bitboard.&nbsp;Order:<br>
+(A8&nbsp;=&nbsp;64&nbsp;&nbsp;&gt;&nbsp;...&nbsp;&gt;&nbsp;H8&nbsp;&gt;&nbsp;A7&nbsp;&gt;&nbsp;...&nbsp;&gt;&nbsp;A1&nbsp;&gt;&nbsp;...&nbsp;&gt;&nbsp;H1&nbsp;=&nbsp;1)</tt></dd></dl>
+ <dl><dt><a name="-find_piece_file"><strong>find_piece_file</strong></a>(piece_pos: 'int')</dt><dd><tt>Find&nbsp;the&nbsp;file&nbsp;of&nbsp;the&nbsp;position&nbsp;of&nbsp;a&nbsp;piece&nbsp;on&nbsp;a&nbsp;bitboard&nbsp;A&nbsp;=&nbsp;7,&nbsp;H&nbsp;=&nbsp;0&nbsp;()</tt></dd></dl>
+ <dl><dt><a name="-find_piece_rank"><strong>find_piece_rank</strong></a>(piece_pos: 'int')</dt><dd><tt>Find&nbsp;the&nbsp;row&nbsp;of&nbsp;the&nbsp;position&nbsp;of&nbsp;a&nbsp;piece&nbsp;on&nbsp;a&nbsp;bitboard.&nbsp;1&nbsp;=&nbsp;1,&nbsp;8&nbsp;=&nbsp;8</tt></dd></dl>
+ <dl><dt><a name="-get_file_neighbors"><strong>get_file_neighbors</strong></a>(file: 'int')</dt><dd><tt>Get&nbsp;the&nbsp;neighbouring&nbsp;files&nbsp;to&nbsp;an&nbsp;input&nbsp;file</tt></dd></dl>
+ <dl><dt><a name="-get_piece_bb_total"><strong>get_piece_bb_total</strong></a>(piece: 'int', bitboard: 'int') -&gt; 'float'</dt><dd><tt>Evaluate&nbsp;points&nbsp;of&nbsp;the&nbsp;total&nbsp;ammount&nbsp;pieces&nbsp;on&nbsp;a&nbsp;bitboard</tt></dd></dl>
+ <dl><dt><a name="-get_rank_behind"><strong>get_rank_behind</strong></a>(rank: 'int')</dt><dd><tt>Get&nbsp;the&nbsp;behind&nbsp;in&nbsp;front&nbsp;of&nbsp;the&nbsp;input&nbsp;rank</tt></dd></dl>
+ <dl><dt><a name="-get_rank_front"><strong>get_rank_front</strong></a>(rank: 'int')</dt><dd><tt>Get&nbsp;the&nbsp;rank&nbsp;in&nbsp;front&nbsp;of&nbsp;the&nbsp;input&nbsp;rank</tt></dd></dl>
+ <dl><dt><a name="-make_default_file"><strong>make_default_file</strong></a>()</dt><dd><tt>Create&nbsp;a&nbsp;bitboard&nbsp;for&nbsp;the&nbsp;file&nbsp;H</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>BB_A1</strong> = 1<br>
+<strong>BB_A8</strong> = 72057594037927936<br>
+<strong>BB_H1</strong> = 128<br>
+<strong>BB_H8</strong> = 9223372036854775808<br>
+<strong>BISHOP</strong> = 3<br>
+<strong>BLACK</strong> = False<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>KNIGHT</strong> = 2<br>
+<strong>List</strong> = typing.List<br>
+<strong>PAWN</strong> = 1<br>
+<strong>QUEEN</strong> = 5<br>
+<strong>ROOK</strong> = 4<br>
+<strong>WHITE</strong> = True<br>
+<strong>annotations</strong> = _Feature((3, 7, 0, 'beta', 1), (4, 0, 0, 'alpha', 0), 1048576)</td></tr></table>
+</body></html>
