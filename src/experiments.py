@@ -3,7 +3,7 @@ import json
 import subprocess
 import sys
 from os.path import basename
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import matplotlib.markers as mk
 import matplotlib.pyplot as plt
@@ -15,135 +15,177 @@ from sklearn.mixture import GaussianMixture
 try:
     from opening import AXIS_NAMES_SHORT, Opening
     from pychora_db import process_database
-    from pychora_rec import (
-        check_opening_in_list,
-        cluster_data,
-        dicts_to_openings,
-        extract_openings,
-        find_fitting_openings,
-        get_bic_score,
-        get_centre_of_mass,
-        get_cluster_dim_limits,
-        get_cluster_game_counts,
-        get_geometric_median,
-        get_openings_in_clusters,
-        get_valid_openings,
-        jefferson_share_method,
-        json_to_dicts,
-        normalise_values,
-        plot_points,
-        plot_points_in_clusters,
-        plot_recommendations,
-        process_clustering,
-        read_opening_data,
-    )
+    from pychora_rec import (check_opening_in_list, cluster_data,
+                             dicts_to_openings, extract_openings,
+                             find_fitting_openings, get_bic_score,
+                             get_centre_of_mass, get_cluster_dim_limits,
+                             get_cluster_game_counts, get_geometric_median,
+                             get_openings_in_clusters, get_valid_openings,
+                             jefferson_share_method, json_to_dicts,
+                             normalise_values, plot_points,
+                             plot_points_in_clusters, plot_recommendations,
+                             process_clustering, read_opening_data)
 except ImportError:
     from src.opening import AXIS_NAMES_SHORT, Opening
     from src.pychora_db import process_database
-    from src.pychora_rec import (
-        check_opening_in_list,
-        cluster_data,
-        dicts_to_openings,
-        extract_openings,
-        find_fitting_openings,
-        get_bic_score,
-        get_centre_of_mass,
-        get_cluster_dim_limits,
-        get_cluster_game_counts,
-        get_geometric_median,
-        get_openings_in_clusters,
-        get_valid_openings,
-        jefferson_share_method,
-        json_to_dicts,
-        normalise_values,
-        plot_points,
-        plot_points_in_clusters,
-        plot_recommendations,
-        process_clustering,
-        read_opening_data,
-    )
+    from src.pychora_rec import (check_opening_in_list, cluster_data,
+                                 dicts_to_openings, extract_openings,
+                                 find_fitting_openings, get_bic_score,
+                                 get_centre_of_mass, get_cluster_dim_limits,
+                                 get_cluster_game_counts, get_geometric_median,
+                                 get_openings_in_clusters, get_valid_openings,
+                                 jefferson_share_method, json_to_dicts,
+                                 normalise_values, plot_points,
+                                 plot_points_in_clusters, plot_recommendations,
+                                 process_clustering, read_opening_data)
 
 
-def test_bic_score():
-    """Create a series of BIC scores for varying minimum proportions and
-    opening lengths"""
-    max_sample = 1_600_000
+# def test_bic_score():
+#     """Create a series of BIC scores for varying minimum proportions and
+#     opening lengths"""
+#     max_sample = 1_600_000
 
-    database = "game_databases/lichess_db_2017-01.pgn"
-    files = create_varying_opening_db(database, max_sample)
+#     database = "game_databases/lichess_db_2017-01.pgn"
+#     files = create_varying_opening_db(database)
+#     with open("results/experiments_unweighted_b.txt", "w", encoding="utf-8") as out:
+#         for file in files:
+#             openings: List[Opening] = dicts_to_openings(json_to_dicts(file))
+#             games_recorded: int = 0
 
-    with open("results/experiments_unweighted_b.txt", "w", encoding="utf-8") as out:
-        for file in files:
-            openings: List[Opening] = dicts_to_openings(json_to_dicts(file))
-            games_recorded: int = 0
+#             for opening in openings:
+#                 games_recorded += opening.results_total[0]
 
-            for opening in openings:
-                games_recorded += opening.results_total[0]
+#             cluster_factor = int(games_recorded / 1000)
+#             if cluster_factor == 0:
+#                 cluster_factor = 1
 
-            cluster_factor = int(games_recorded / 1000)
-            if cluster_factor == 0:
-                cluster_factor = 1
+#             data = extract_openings(openings, BLACK)
 
-            data = extract_openings(openings, BLACK)
+#             if len(openings) < 45:
+#                 out.write(f"{basename(file)}: \n")
+#                 out.write("Side: Black\n")
+#                 out.write(f"Openings recorded = {len(openings)} \n")
+#                 out.write("Could not cluster")
 
-            if len(openings) < 45:
-                out.write(f"{basename(file)}: \n")
-                out.write("Side: Black\n")
-                out.write(f"Openings recorded = {len(openings)} \n")
-                out.write("Could not cluster")
+#             best_score = get_bic_score(data)
+#             for _ in range(5):
+#                 temp_best_score = get_bic_score(data)
+#                 if temp_best_score["BIC score"] < best_score["BIC score"]:
+#                     best_score = temp_best_score
 
-            best_score = get_bic_score(data)
-            for _ in range(5):
-                temp_best_score = get_bic_score(data)
-                if temp_best_score["BIC score"] < best_score["BIC score"]:
-                    best_score = temp_best_score
-
-            out.write(f"{basename(file)}: \n")
-            out.write("Side: Black\n")
-            out.write(f"Openings recorded = {len(openings)} \n")
-            out.write(json.dumps(best_score.to_dict()))
+#             out.write(f"{basename(file)}: \n")
+#             out.write("Side: Black\n")
+#             out.write(f"Openings recorded = {len(openings)} \n")
+#             out.write(json.dumps(best_score.to_dict()))
 
 
-def create_varying_opening_db(database: str, max_sample: int) -> List[str]:
-    """Takes in a database path and creates a series of opening databases
-    by varying opening length and sampling rate"""
+def test_bic_score(database: str):
+    """Takes in a database path calculates the BIC scores for the values
+    and outputs to command line as a latex tabular"""
     max_sample = 1_600_000
 
     files = []
 
-    for opening_length in range(3, 11):
-        process_database(
-            database, "experiments", 2 / 100000, opening_length, max_sample
+    black_df = [[0 for _ in range(3, 11)] for _ in range(2, 21, 2)]
+    white_df = [[0 for _ in range(3, 11)] for _ in range(2, 21, 2)]
+
+    indices = []
+    columns = []
+
+    for open_index, opening_length in enumerate(range(3, 11)):
+        columns.append(opening_length)
+
+        file_name = glob.glob(
+            f"exp_data/example_large_jsons/lichess_db_ol{opening_length}_p20.json"
         )
 
+        # file = process_database(
+        #     database,
+        #     "exp_data/example_large_jsons",
+        #     2 / 100000,
+        #     opening_length,
+        #     max_sample,
+        # )
+        if len(file_name) == 0:
+            file_name = process_database(
+                database,
+                "exp_data/example_large_jsons",
+                2 / 100000,
+                opening_length,
+                max_sample,
+            )
+        else:
+            file_name = file_name[0]
         with open(
-            f"experiments/lichess_db_ol{int(opening_length)}_p2.json",
+            file_name,
             "r",
             encoding="utf-8",
         ) as in_file:
             data = json.load(in_file)
 
-        for min_prop in range(4, 21, 2):
-            temp_opening = []
+        for col_index, min_prop in enumerate(range(20, 201, 20)):
+            if len(indices) < len(range(2, 21, 2)):
+                indices.append(min_prop)
+
+            temp_openings = []
+
             for opening in data["Openings"]:
-                if opening["Total Results"][0] > (max_sample * min_prop / 100000):
-                    temp_opening.append(opening)
+                if opening["Total Results"][0] > (max_sample * min_prop / 1000000):
+                    temp_openings.append(opening)
 
-            data["Openings"] = temp_opening
-            data["Opening Length"] = opening_length
-            data["Sample Rate"] = min_prop
+            temp_openings = dicts_to_openings(temp_openings)
+            if not temp_openings:
+                white_df[col_index][open_index] = int(0)  # type: ignore
+                black_df[col_index][open_index] = int(0)  # type:ignore
 
-            with open(
-                f"experiments/lichess_db_ol{opening_length}_p{min_prop}.json",
-                "w",
-                encoding="utf-8",
-            ) as out:
-                out.write(json.dumps(data, indent=4))
+            try:
+                clust_data_w = extract_openings(temp_openings, WHITE)
+                clust_data_b = extract_openings(temp_openings, BLACK)
+            except IndexError:
+                white_df[col_index][open_index] = int(0)  # type: ignore
+                black_df[col_index][open_index] = int(0)  # type:ignore
+                continue
 
-    for opening_length in range(3, 11):
-        for min_prop in range(2, 21, 2):
-            files.append(f"experiments/lichess_db_ol{opening_length}_p{min_prop}.json")
+            bs_w = 1_000_000_000
+            bs_b = 1_000_000_000
+            w_n = 0
+            b_n = 0
 
+            if len(clust_data_w) > 20:
+                for _ in range(3):
+                    t_w = get_bic_score(clust_data_w)
+                    if bs_w > t_w["BIC score"]:
+                        bs_w = t_w["BIC score"]
+                        w_n = t_w["Number of components"]
+            if len(clust_data_b) > 20:
+                for _ in range(3):
+                    t_b = get_bic_score(clust_data_b)
+                    if bs_b > t_b["BIC score"]:
+                        bs_b = t_b["BIC score"]
+                        b_n = t_b["Number of components"]
+
+            white_df[col_index][open_index] = int(w_n)  # type: ignore
+            black_df[col_index][open_index] = int(b_n)  # type:ignore
+            # data["Openings"] = temp_opening
+            # data["Opening Length"] = opening_length
+            # data["Sample Rate"] = min_prop
+
+    #         with open(
+    #             f"experiments/lichess_db_ol{opening_length}_p{min_prop}.json",
+    #             "w",
+    #             encoding="utf-8",
+    #         ) as out:
+    #             out.write(json.dumps(data, indent=4))
+
+    # for opening_length in range(3, 11):
+    #     for min_prop in range(2, 21, 2):
+    #         files.append(f"experiments/lichess_db_ol{opening_length}_p{min_prop}.json")
+
+    print("\n White:")
+    print(pd.DataFrame(white_df, index=indices, columns=columns).to_latex())
+
+    print("\n Black:")
+    print(pd.DataFrame(black_df, index=indices, columns=columns).to_latex())
     return files
 
 
@@ -263,16 +305,14 @@ def plot_each_cluster():
     return
 
 
-def display_pandas_clusters():
-    c_model = cluster_data("opening_databases/lichess_db_ol8_p30.json", WHITE, 4)
+def display_pandas_clusters(file_name):
+    c_model = cluster_data(file_name, WHITE, 4)
 
     if c_model is None:
         print("!!! Couldnt cluster from file !!!")
         return
 
-    openings = dicts_to_openings(
-        json_to_dicts("opening_databases/lichess_db_ol8_p30.json")
-    )
+    openings = dicts_to_openings(json_to_dicts(file_name))
     list_vals: List[List[float]] = []
 
     dims = get_cluster_dim_limits([openings], WHITE)[0]
@@ -688,9 +728,4 @@ def run_command(cmd):
 
 
 if __name__ == "__main__":
-    test_program(
-        clust_file="exp_data/example_large_jsons/lichess_db_ol5_p150.json",
-        input_dir="exp_data/example_user_pgns",
-        ouput_dir="exp_data/example_user_jsons",
-        prefix="LBU",
-    )
+    display_pandas_clusters("exp_data/example_large_jsons/lichess_db_ol9_p20.json")

@@ -11,9 +11,11 @@ from typing import Any, Dict, List, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
 # Used for creating clusters and selecting BIC scores
 import scipy.stats
 from chess import BLACK, WHITE
+
 # Used for Geometric means
 from scipy.spatial.distance import cdist, euclidean
 from sklearn.mixture import GaussianMixture
@@ -23,11 +25,9 @@ from sklearn.model_selection import GridSearchCV
 # To be used in the package, and as __main__
 
 try:
-    from opening import (AXIS_NAMES, AXIS_NAMES_SHORT, Opening,
-                         check_opening_in_list)
+    from opening import AXIS_NAMES, AXIS_NAMES_SHORT, Opening, check_opening_in_list
 except ImportError:
-    from src.opening import (AXIS_NAMES, AXIS_NAMES_SHORT, Opening,
-                             check_opening_in_list)
+    from src.opening import AXIS_NAMES, AXIS_NAMES_SHORT, Opening, check_opening_in_list
 
 ### READING FILE FUNCTIONS ###
 
@@ -43,7 +43,7 @@ def json_to_dicts(in_file: str) -> List[Dict[str, Union[str, List[Union[int, flo
     """Converts Bitboard JSON object into Dict of data"""
     data: List[Dict[str, Union[str, List[Union[int, float]]]]]
 
-    with open(in_file, "r", encoding='utf-8') as file:
+    with open(in_file, "r", encoding="utf-8") as file:
         try:
             data = json.load(file)
         except json.JSONDecodeError:
@@ -52,7 +52,7 @@ def json_to_dicts(in_file: str) -> List[Dict[str, Union[str, List[Union[int, flo
     if not data:
         return []
 
-    return data['Openings']  # type: ignore
+    return data["Openings"]  # type: ignore
 
 
 def dicts_to_openings(dict_list: List[Dict[str, Any]]) -> List[Opening]:
@@ -69,42 +69,73 @@ def dicts_to_openings(dict_list: List[Dict[str, Any]]) -> List[Opening]:
 
     return out_list
 
+
 ### CONTROL FLOW FUNCTIONS ###
 
 
-def process_clustering(clust_file: str,
-                       user_file: str,
-                       color: Union[bool, None] = None,
-                       export_recs: Union[str, None] = None,
-                       export_plots: Union[str, None] = None,
-                       clust_count: int = 0,
-                       test: bool = False,
-                       method: str = 'geo') -> List[str]:
+def process_clustering(
+    clust_file: str,
+    user_file: str,
+    color: Union[bool, None] = None,
+    export_recs: Union[str, None] = None,
+    export_plots: Union[str, None] = None,
+    clust_count: int = 0,
+    test: bool = False,
+    method: str = "geo",
+) -> List[str]:
     """Call all relevent functions to recommend a set of openings for any or both
     colors"""
     random.seed()
     output_files = []
 
     if not file_compatability(clust_file, user_file):
-        print("!!! Error: The methods of quantifying openings is not identical. Cannot compare repertoires")
-        print("--- Quantifying functions have to be the same and in the same order between repertoires ---")
+        print(
+            "!!! Error: The methods of quantifying openings is not identical. Cannot compare repertoires"
+        )
+        print(
+            "--- Quantifying functions have to be the same and in the same order between repertoires ---"
+        )
         return output_files
 
     if color is None:
         output_files.append(
             process_for_color(
-                clust_file, user_file, WHITE, export_recs,
-                export_plots, clust_count, test, method=method))
+                clust_file,
+                user_file,
+                WHITE,
+                export_recs,
+                export_plots,
+                clust_count,
+                test,
+                method=method,
+            )
+        )
 
         output_files.append(
             process_for_color(
-                clust_file, user_file, BLACK, export_recs,
-                export_plots, clust_count, test, method=method))
+                clust_file,
+                user_file,
+                BLACK,
+                export_recs,
+                export_plots,
+                clust_count,
+                test,
+                method=method,
+            )
+        )
     else:
         output_files.append(
             process_for_color(
-                clust_file, user_file, color, export_recs,
-                export_plots, clust_count, test, method=method))
+                clust_file,
+                user_file,
+                color,
+                export_recs,
+                export_plots,
+                clust_count,
+                test,
+                method=method,
+            )
+        )
 
     print("--- Recommendations Completed! ---")
     return output_files
@@ -113,7 +144,7 @@ def process_clustering(clust_file: str,
 def file_compatability(file_1: str, file_2: str) -> bool:
     """Check if the two files methods of quantifying the openings into values are identical.
     If they are not, there is no way to reliably compare the two methods."""
-    with open(file_1, "r", encoding='utf-8') as file:
+    with open(file_1, "r", encoding="utf-8") as file:
         try:
             value_names_1 = json.load(file)["Value Names"]
         except json.JSONDecodeError:
@@ -122,7 +153,7 @@ def file_compatability(file_1: str, file_2: str) -> bool:
             print(f"!!! Error: Value names not found, please reconvert {file_2}")
             return False
 
-    with open(file_2, "r", encoding='utf-8') as file:
+    with open(file_2, "r", encoding="utf-8") as file:
         try:
             value_names_2 = json.load(file)["Value Names"]
         except json.JSONDecodeError:
@@ -134,19 +165,21 @@ def file_compatability(file_1: str, file_2: str) -> bool:
     return value_names_1 == value_names_2
 
 
-def process_for_color(clust_file: str,
-                      user_file: str,
-                      color: bool,
-                      export_recs: Union[str, None] = None,
-                      export_plots: Union[str, None] = None,
-                      clust_count: int = 0,
-                      test: bool = False,
-                      method: str = 'geo') -> str:
+def process_for_color(
+    clust_file: str,
+    user_file: str,
+    color: bool,
+    export_recs: Union[str, None] = None,
+    export_plots: Union[str, None] = None,
+    clust_count: int = 0,
+    test: bool = False,
+    method: str = "geo",
+) -> str:
     """Call all relevent functions to recommend a set of openings for a specific color
     Returns the path of thje file that contains the recommendations"""
 
     # Get the base file name for output purposes
-    base_file_name = os.path.basename(user_file).split('.')[0]
+    base_file_name = os.path.basename(user_file).split(".")[0]
     if color == WHITE:
         color_str = "White"
     else:
@@ -156,7 +189,7 @@ def process_for_color(clust_file: str,
 
     if clust_model is None:
         print("!!! Error clust_model is None !!!")
-        return ''
+        return ""
 
     # If the user defines to export the plots
     if export_plots is not None:
@@ -164,12 +197,9 @@ def process_for_color(clust_file: str,
         plot_points_in_clusters(clust_model, color, user_file, export_plots)
 
     # Find the openings
-    openings = find_fitting_openings(clust_model,
-                                     user_file,
-                                     clust_file,
-                                     color,
-                                     test=test,
-                                     method=method)
+    openings = find_fitting_openings(
+        clust_model, user_file, clust_file, color, test=test, method=method
+    )
 
     # Convert openings into a dict type
     out_dict = {}
@@ -185,16 +215,18 @@ def process_for_color(clust_file: str,
     if export_recs is None:
         export_recs = os.path.dirname(user_file)
 
-    output_file_name = f'{export_recs}/{base_file_name}_{color_str}.json'
-    with open(output_file_name, 'w', encoding='utf-8') as out:
+    output_file_name = f"{export_recs}/{base_file_name}_{color_str}.json"
+    with open(output_file_name, "w", encoding="utf-8") as out:
         out.write(json.dumps(out_dict, indent=4))
     return output_file_name
+
 
 ### CLUSTERING FUNCTIONS ###
 
 
-def cluster_data(clust_file: str, color: bool,
-                 num_components: int = 0) -> Union[GaussianMixture, None]:
+def cluster_data(
+    clust_file: str, color: bool, num_components: int = 0
+) -> Union[GaussianMixture, None]:
     """Create a Gaussian mixture model using the data within a cluster file and a
     players color. Can manually select the number of components"""
 
@@ -239,7 +271,7 @@ def cluster_data(clust_file: str, color: bool,
         cluster_model = create_clustering(
             data_set,
             int(best_scoring["Number of components"]),  # type: ignore
-            str(best_scoring["Type of covariance"])  # type: ignore
+            str(best_scoring["Type of covariance"]),  # type: ignore
         )
     # If the number of components is defined but incorrectly
     elif num_components < 0:
@@ -248,9 +280,7 @@ def cluster_data(clust_file: str, color: bool,
 
     else:
         cluster_model = create_clustering(
-            data_set,
-            num_components,
-            str(best_scoring["Type of covariance"])
+            data_set, num_components, str(best_scoring["Type of covariance"])
         )
 
     print("--- Finished Clustering Data ---")
@@ -260,12 +290,14 @@ def cluster_data(clust_file: str, color: bool,
 def get_bic_score(data_set: np.ndarray) -> pd.DataFrame:
     """Get the best BIC scoring number of clusters and covariance type for a dataset"""
     param_grid = {
-        "n_components": range(1, 10),
-        "covariance_type": ["spherical", "tied", "diag", "full"]
+        "n_components": range(1, 14),
+        "covariance_type": ["spherical", "tied", "diag", "full"],
     }
 
     # Use the sci-learn kit to calculate the BIC values for each of the values
-    grid_search = GridSearchCV(GaussianMixture(), param_grid=param_grid, scoring=gmm_BIC_scorer)
+    grid_search = GridSearchCV(
+        GaussianMixture(), param_grid=param_grid, scoring=gmm_BIC_scorer
+    )
     grid_search.fit(data_set)
 
     data_frame = pd.DataFrame(grid_search.cv_results_)[
@@ -292,10 +324,12 @@ def get_bic_score(data_set: np.ndarray) -> pd.DataFrame:
 
 
 def create_clustering(
-        data_set: np.ndarray, components: int, convariance_type: str) -> GaussianMixture:
+    data_set: np.ndarray, components: int, convariance_type: str
+) -> GaussianMixture:
     """Create a clustering model on a data set for a covariance type and a number of clusters"""
-    clust_model = GaussianMixture(n_components=components,
-                                  covariance_type=convariance_type, n_init=5)  # type: ignore
+    clust_model = GaussianMixture(
+        n_components=components, covariance_type=convariance_type, n_init=5
+    )  # type: ignore
     clust_model.fit(data_set)
 
     return clust_model
@@ -307,8 +341,8 @@ def gmm_BIC_scorer(estimator: GaussianMixture, X):
 
 
 def extract_openings(
-        openings: List[Opening],
-        color: bool, weighting: float = 0) -> np.ndarray:
+    openings: List[Opening], color: bool, weighting: float = 0
+) -> np.ndarray:
     """Convert a list of openings into a list of the values for each opening"""
 
     # This is weird but done to create a np array of the correct dimensions
@@ -339,16 +373,19 @@ def extract_openings(
 
     return data_set
 
+
 ## RECOMMEND OPENING FUNCTIONS ###
 
 
-def find_fitting_openings(cluster_model: GaussianMixture,
-                          users_opening_file: str,
-                          large_game_file: str,
-                          color: bool,
-                          recommendations: int = 10,
-                          test: bool = False,
-                          method: str = 'geo') -> List[Opening]:
+def find_fitting_openings(
+    cluster_model: GaussianMixture,
+    users_opening_file: str,
+    large_game_file: str,
+    color: bool,
+    recommendations: int = 10,
+    test: bool = False,
+    method: str = "geo",
+) -> List[Opening]:
     """Get a list of recommended openings within a opening database for a user repertoire"""
     # Check the repertoires and convert into lists of Openings
 
@@ -358,7 +395,7 @@ def find_fitting_openings(cluster_model: GaussianMixture,
         return []
 
     if test:
-        user_openings = user_openings[:len(user_openings)//2]
+        user_openings = user_openings[: len(user_openings) // 2]
 
     large_openings = dicts_to_openings(json_to_dicts(large_game_file))
     if not large_openings:
@@ -366,8 +403,12 @@ def find_fitting_openings(cluster_model: GaussianMixture,
 
     # Put all the openings into their clusters
     print("--- Putting Openings in Clusters ---")
-    user_openings_in_clusters = get_openings_in_clusters(cluster_model, user_openings, color)
-    all_openings_in_clusters = get_openings_in_clusters(cluster_model, large_openings, color)
+    user_openings_in_clusters = get_openings_in_clusters(
+        cluster_model, user_openings, color
+    )
+    all_openings_in_clusters = get_openings_in_clusters(
+        cluster_model, large_openings, color
+    )
 
     # Count each cluster for the amount of GAMES within them, NOT UNIQUE OPENINGS
     cluster_counts = get_cluster_game_counts(user_openings_in_clusters)
@@ -381,28 +422,31 @@ def find_fitting_openings(cluster_model: GaussianMixture,
         all_openings_in_clusters,
         rec_openins_per_cluster,
         color,
-        method=method)
+        method=method,
+    )
 
     print("--- Found Recommended Openings! ---\n")
     return recommended_openings
 
 
-def get_openings_in_clusters(cluster_model: GaussianMixture,
-                             openings: List[Opening],
-                             color: bool) -> List[List[Opening]]:
+def get_openings_in_clusters(
+    cluster_model: GaussianMixture, openings: List[Opening], color: bool
+) -> List[List[Opening]]:
     """Put each opening into its correstponding cluster index in a list"""
 
     openings_in_clusters = [[] for _ in range(len(cluster_model.means_))]  # type:ignore
 
     for opening in openings:
-        openings_in_clusters[cluster_model.predict(
-            [read_opening_data(opening, color)])[0]].append(opening)  # type:ignore
+        openings_in_clusters[
+            cluster_model.predict([read_opening_data(opening, color)])[0]  # type:ignore
+        ].append(
+            opening
+        )  # type:ignore
 
     return openings_in_clusters
 
 
-def get_cluster_game_counts(
-        openings_in_clusters: List[List[Opening]]) -> List[int]:
+def get_cluster_game_counts(openings_in_clusters: List[List[Opening]]) -> List[int]:
     """Get the amount of games played within a cluster"""
 
     cluster_counts = [0 for _ in range(len(openings_in_clusters))]
@@ -414,12 +458,14 @@ def get_cluster_game_counts(
     return cluster_counts
 
 
-def jefferson_share_method(clusts_and_counts: List[int],
-                           number_of_recommendations: int) -> List[int]:
+def jefferson_share_method(
+    clusts_and_counts: List[int], number_of_recommendations: int
+) -> List[int]:
     """Use the sharing method devised by jefferson to distribute the amount of recommendations
     between the clusters based on the amount of games shared. Information on the method can
     be found here:
-    https://math.libretexts.org/Bookshelves/Applied_Mathematics/Math_in_Society_(Lippman)/04:_Apportionment/4.03:_Jeffersons_Method"""
+    https://math.libretexts.org/Bookshelves/Applied_Mathematics/Math_in_Society_(Lippman)/04:_Apportionment/4.03:_Jeffersons_Method
+    """
 
     # Get the total tally of games played
     total_games: int = 0
@@ -434,14 +480,15 @@ def jefferson_share_method(clusts_and_counts: List[int],
     divisor_decr: float = divisor * 0.05
 
     # Get the first values for the clusters (integer conversion always rounds down)
-    rec_games_per_clust = [int(count/divisor) for count in clusts_and_counts]
+    rec_games_per_clust = [int(count / divisor) for count in clusts_and_counts]
 
     # Escape count incase the loop gets stuck
     escape_int: int = 0
     while sum(rec_games_per_clust) != number_of_recommendations:
-
         # Reprocess the counts
-        rec_games_per_clust = [int(count/(divisor-divisor_decr)) for count in clusts_and_counts]
+        rec_games_per_clust = [
+            int(count / (divisor - divisor_decr)) for count in clusts_and_counts
+        ]
 
         # If there are more recommendations, reduce the decrement and retry
         if sum(rec_games_per_clust) > number_of_recommendations:
@@ -457,11 +504,13 @@ def jefferson_share_method(clusts_and_counts: List[int],
     return rec_games_per_clust
 
 
-def find_recommended_openings(user_openings_in_clusters: List[List[Opening]],
-                              all_openings_in_clusters: List[List[Opening]],
-                              rec_openings_per_cluster: List[int],
-                              color: bool,
-                              method: str = 'geo') -> List[Opening]:
+def find_recommended_openings(
+    user_openings_in_clusters: List[List[Opening]],
+    all_openings_in_clusters: List[List[Opening]],
+    rec_openings_per_cluster: List[int],
+    color: bool,
+    method: str = "geo",
+) -> List[Opening]:
     """Find the recommended openings for a users openings within clusters, all openings
     in clusters, and with the ammount of reccommended openings per cluster"""
 
@@ -473,27 +522,35 @@ def find_recommended_openings(user_openings_in_clusters: List[List[Opening]],
             continue
         # for each clusters if it is apportioned to have an opening
         # either use lowest_dists_in_cluster or closests_to_geo_median
-        if method == 'rand':
-            rec_cluster_openings = get_rand_in_cluster(user_openings_in_clusters[i],
-                                                       all_openings_in_clusters[i],
-                                                       rec_ammount,
-                                                       color, w=False)
-        elif method == 'common':
-            rec_cluster_openings = most_common_in_cluster(user_openings_in_clusters[i],
-                                                          all_openings_in_clusters[i],
-                                                          rec_ammount)
-        elif method == 'wrand':
-            rec_cluster_openings = get_rand_in_cluster(user_openings_in_clusters[i],
-                                                       all_openings_in_clusters[i],
-                                                       rec_ammount,
-                                                       color, w=True)
+        if method == "rand":
+            rec_cluster_openings = get_rand_in_cluster(
+                user_openings_in_clusters[i],
+                all_openings_in_clusters[i],
+                rec_ammount,
+                color,
+                w=False,
+            )
+        elif method == "common":
+            rec_cluster_openings = most_common_in_cluster(
+                user_openings_in_clusters[i], all_openings_in_clusters[i], rec_ammount
+            )
+        elif method == "wrand":
+            rec_cluster_openings = get_rand_in_cluster(
+                user_openings_in_clusters[i],
+                all_openings_in_clusters[i],
+                rec_ammount,
+                color,
+                w=True,
+            )
 
         else:
-            rec_cluster_openings = closests_to_geo_median(user_openings_in_clusters[i],
-                                                          all_openings_in_clusters[i],
-                                                          rec_ammount,
-                                                          cluster_dime_lims[i],
-                                                          color)
+            rec_cluster_openings = closests_to_geo_median(
+                user_openings_in_clusters[i],
+                all_openings_in_clusters[i],
+                rec_ammount,
+                cluster_dime_lims[i],
+                color,
+            )
 
         for opening in rec_cluster_openings:
             # Add each recommended opening to the list
@@ -502,27 +559,33 @@ def find_recommended_openings(user_openings_in_clusters: List[List[Opening]],
     return recommended_openings
 
 
-def get_cluster_dim_limits(openings_in_clusters: List[List[Opening]],
-                           color) -> List[List[List[float]]]:
+def get_cluster_dim_limits(
+    openings_in_clusters: List[List[Opening]], color
+) -> List[List[List[float]]]:
     """
     Returns the minimum and maximum for each dimension for each cluster
     """
     len_open_data = len(read_opening_data(openings_in_clusters[0][0], color))
-    cluster_dimensions = ([[[0.0, 0.0] for _ in range(len_open_data)]
-                           for _ in range(len(openings_in_clusters))])
+    cluster_dimensions = [
+        [[0.0, 0.0] for _ in range(len_open_data)]
+        for _ in range(len(openings_in_clusters))
+    ]
 
     # Initialise all the cluster's dimensions to contain the first opening values
     for clust_no, opening_list in enumerate(openings_in_clusters):
         first_opening_vals = read_opening_data(opening_list[0], color)
-        for clust_dimension, opening_val in zip(cluster_dimensions[clust_no], first_opening_vals):
+        for clust_dimension, opening_val in zip(
+            cluster_dimensions[clust_no], first_opening_vals
+        ):
             # Index 0 contains the minimum, index 1 is the maximum
             clust_dimension[0] = opening_val
             clust_dimension[1] = opening_val
 
         # Go through all the next openings
         for opening in opening_list[1:]:
-            for clust_dimension, val in zip(cluster_dimensions[clust_no],
-                                            read_opening_data(opening, color)):
+            for clust_dimension, val in zip(
+                cluster_dimensions[clust_no], read_opening_data(opening, color)
+            ):
                 # Check if the values exceed the boundaries before.
                 # Replace them if they do
                 if val < clust_dimension[0]:
@@ -533,11 +596,13 @@ def get_cluster_dim_limits(openings_in_clusters: List[List[Opening]],
     return cluster_dimensions
 
 
-def get_rand_in_cluster(user_openings: List[Opening],
-                        all_openings: List[Opening],
-                        rec_quant: int,
-                        color: bool,
-                        w=False) -> List[Opening]:
+def get_rand_in_cluster(
+    user_openings: List[Opening],
+    all_openings: List[Opening],
+    rec_quant: int,
+    color: bool,
+    w=False,
+) -> List[Opening]:
     """Get a given ammount of random openings within a cluster"""
     valid_openings = get_valid_openings(all_openings, user_openings, color)
     if not w:
@@ -545,13 +610,13 @@ def get_rand_in_cluster(user_openings: List[Opening],
 
     weights = [op.results_total[0] for op in valid_openings]
     total = sum(weights)
-    weights = [val/total for val in weights]
+    weights = [val / total for val in weights]
     return np.random.choice(valid_openings, size=rec_quant, p=weights)  # type: ignore
 
 
-def most_common_in_cluster(user_openings: List[Opening],
-                           all_openings: List[Opening],
-                           rec_quant: int) -> List[Opening]:
+def most_common_in_cluster(
+    user_openings: List[Opening], all_openings: List[Opening], rec_quant: int
+) -> List[Opening]:
     """Get the most common openings within a cluster"""
 
     output: List[Opening] = []
@@ -575,11 +640,13 @@ def most_common_in_cluster(user_openings: List[Opening],
     return output
 
 
-def lowest_dists_in_cluster(user_openings: List[Opening],
-                            all_openings: List[Opening],
-                            rec_quant: int,
-                            cluster_dim_limits: List[List[float]],
-                            color: bool) -> List[Opening]:
+def lowest_dists_in_cluster(
+    user_openings: List[Opening],
+    all_openings: List[Opening],
+    rec_quant: int,
+    cluster_dim_limits: List[List[float]],
+    color: bool,
+) -> List[Opening]:
     """Find the best given number openings for a cluster for a user repertoire
     from a large opening database"""
 
@@ -590,9 +657,8 @@ def lowest_dists_in_cluster(user_openings: List[Opening],
 
     for opening in user_openings:
         user_opening_values.append(
-            normalise_values(
-                read_opening_data(opening, color),
-                cluster_dim_limits))
+            normalise_values(read_opening_data(opening, color), cluster_dim_limits)
+        )
         user_opening_weights.append(opening.results_total[0])
 
     # Keep track of the score of each opening. could be a tuple to save scope space
@@ -603,8 +669,8 @@ def lowest_dists_in_cluster(user_openings: List[Opening],
     for opening in valid_openings:
         # Get the distance score for each opening
         score = find_distance(
-            read_opening_data(opening, color),
-            user_opening_values, user_opening_weights)
+            read_opening_data(opening, color), user_opening_values, user_opening_weights
+        )
 
         # If there are less openings than the amount apportioned, add it to the recommended
         if len(recommened_openings) < rec_quant:
@@ -628,11 +694,13 @@ def lowest_dists_in_cluster(user_openings: List[Opening],
     return recommened_openings
 
 
-def closests_to_geo_median(user_openings: List[Opening],
-                           all_openings: List[Opening],
-                           rec_quant: int,
-                           cluster_dim_limits: List[List[float]],
-                           color: bool) -> List[Opening]:
+def closests_to_geo_median(
+    user_openings: List[Opening],
+    all_openings: List[Opening],
+    rec_quant: int,
+    cluster_dim_limits: List[List[float]],
+    color: bool,
+) -> List[Opening]:
     """Find openings not used by the user which are closest to the geometric
     median of the values of the weighted openings used by the user"""
 
@@ -641,18 +709,21 @@ def closests_to_geo_median(user_openings: List[Opening],
 
     for opening in user_openings:
         user_opening_values.append(
-            normalise_values(
-                read_opening_data(opening, color),
-                cluster_dim_limits))
+            normalise_values(read_opening_data(opening, color), cluster_dim_limits)
+        )
         user_opening_weights.append(opening.results_total[0])
 
-    user_geometric_median = get_geometric_median(user_opening_values, user_opening_weights)
+    user_geometric_median = get_geometric_median(
+        user_opening_values, user_opening_weights
+    )
 
     closest = []
     closest_scores = []
 
     for opening in all_openings:
-        opening_values = normalise_values(read_opening_data(opening, color), cluster_dim_limits)
+        opening_values = normalise_values(
+            read_opening_data(opening, color), cluster_dim_limits
+        )
         dist_score = find_distance(user_geometric_median, [opening_values], [1])
 
         if check_opening_in_list(opening, user_openings):
@@ -679,9 +750,10 @@ def closests_to_geo_median(user_openings: List[Opening],
 
 
 def find_distance(
-        point_data: Union[List[float], np.ndarray],
-        data_points: List[List[float]],
-        weights: List[int]) -> float:
+    point_data: Union[List[float], np.ndarray],
+    data_points: List[List[float]],
+    weights: List[int],
+) -> float:
     """Get the total distance between two points on a graph with the same dimensions"""
     score: float = 0.0
 
@@ -722,9 +794,8 @@ def get_centre_of_mass(point_data: List[np.ndarray], weight: bool = True) -> np.
 
 
 def get_geometric_median(
-        values_list: List[List[float]],
-        weights: List[int],
-        epsillon: float = 1e-5) -> np.ndarray:
+    values_list: List[List[float]], weights: List[int], epsillon: float = 1e-5
+) -> np.ndarray:
     """Calculate the geometric median for a set of values and weights.
     This method is an altered version of the one found here: https://stackoverflow.com/a/30305181
     which is based on the algorithm found here: https://www.pnas.org/doi/pdf/10.1073/pnas.97.4.1423
@@ -763,9 +834,9 @@ def get_geometric_median(
             R = (totals - means) * sum_inv_dists
             r = np.linalg.norm(R)
 
-            rinv = 0 if r == 0 else num_zeros/r
+            rinv = 0 if r == 0 else num_zeros / r
 
-            test_medians = max(0, 1-rinv)*totals + min(1, rinv)*means
+            test_medians = max(0, 1 - rinv) * totals + min(1, rinv) * means
 
         if euclidean(means, test_medians) < epsillon:
             return test_medians
@@ -801,9 +872,8 @@ def normalise_values(values: List[Union[int, float]], dimensions: List[List[floa
 
 
 def get_valid_openings(
-        all_openings: List[Opening],
-        user_openings: List[Opening],
-        color: bool) -> List[Opening]:
+    all_openings: List[Opening], user_openings: List[Opening], color: bool
+) -> List[Opening]:
     """Get openings from a list of openings that aren't part of the users openings
     and that have a >40% chance of not losing"""
     valid_openings: List[Opening] = []
@@ -824,16 +894,20 @@ def get_valid_openings(
 
     return valid_openings
 
+
 ### PLOTING FUNCTIONS ###
 
 
-def plot_points_in_clusters(clust_model: GaussianMixture,
-                            color: bool,
-                            points_file: str,
-                            dest: str,
-                            prop_sizing: bool = False) -> int:
+def plot_points_in_clusters(
+    clust_model: GaussianMixture,
+    color: bool,
+    points_file: str,
+    dest: str,
+    prop_sizing: bool = False,
+) -> int:
     """Plot openings from a JSON file against a Gaussian model for a given chess players color.
-    Each opening is colored according to its cluster given by a cluster model argument."""
+    Each opening is colored according to its cluster given by a cluster model argument.
+    """
 
     openings: List[Opening]
     openings = dicts_to_openings(json_to_dicts(points_file))
@@ -842,20 +916,22 @@ def plot_points_in_clusters(clust_model: GaussianMixture,
         # The openings could not be extracted
         return 1
 
-    b_f_name = os.path.basename(points_file).split('.')[0][:8]
+    b_f_name = os.path.basename(points_file).split(".")[0][:8]
 
-    cluster_colors = ["blue",
-                      "green",
-                      "red",
-                      "cyan",
-                      "magenta",
-                      "orange",
-                      "black",
-                      "grey",
-                      "goldenrod",
-                      "fuchsia",
-                      "purple",
-                      "chartreuse"]
+    cluster_colors = [
+        "blue",
+        "green",
+        "red",
+        "cyan",
+        "magenta",
+        "orange",
+        "black",
+        "grey",
+        "goldenrod",
+        "fuchsia",
+        "purple",
+        "chartreuse",
+    ]
 
     if prop_sizing:
         total_games = 0
@@ -879,7 +955,8 @@ def plot_points_in_clusters(clust_model: GaussianMixture,
     # It does not need to repeat for every axis, as only the positon of the points
     # change, not the cluster each opening belongs in
     plot_colors = np.array(
-        cluster_colors[clust_model.predict([first_opening_vals])[0]])  # type:ignore
+        cluster_colors[clust_model.predict([first_opening_vals])[0]]  # type:ignore
+    )  # type:ignore
 
     for opening in openings[1:]:
         opening_vals = read_opening_data(opening, color)
@@ -887,7 +964,8 @@ def plot_points_in_clusters(clust_model: GaussianMixture,
         # Add the data points to the plots and predict the cluster
         plot_colors = np.append(
             plot_colors,
-            cluster_colors[clust_model.predict([opening_vals])[0]])  # type:ignore
+            cluster_colors[clust_model.predict([opening_vals])[0]],  # type:ignore
+        )
 
     for x_i, x_val in enumerate(first_opening_vals):
         for y_i, y_val in enumerate(first_opening_vals):
@@ -916,15 +994,23 @@ def plot_points_in_clusters(clust_model: GaussianMixture,
             # Plot centroids
             for clust, center in enumerate(clust_model.means_):  # type:ignore
                 vals = list(center)
-                plt.scatter(vals[x_i], vals[y_i], s=70, marker='^',  # type:ignore
-                            color=cluster_colors[clust], alpha=0.9)
+                plt.scatter(
+                    vals[x_i],
+                    vals[y_i],
+                    s=70,
+                    marker="^",  # type:ignore
+                    color=cluster_colors[clust],
+                    alpha=0.9,
+                )
 
             if color == WHITE:
                 str_color = "White"
             else:
                 str_color = "Black"
 
-            plt.title(f"Plot of clusters relating to chess opening styles for {str_color} openings")
+            plt.title(
+                f"Plot of clusters relating to chess opening styles for {str_color} openings"
+            )
 
             # Lable the axis
             plt.xlabel(AXIS_NAMES[x_i])
@@ -932,17 +1018,23 @@ def plot_points_in_clusters(clust_model: GaussianMixture,
 
             # Save toi custom file name
             file_name = (
-                dest + "/" +
-                f"{b_f_name}_{str_color[0]}_{AXIS_NAMES_SHORT[x_i]}_{AXIS_NAMES_SHORT[y_i]}.svg")
+                dest
+                + "/"
+                + f"{b_f_name}_{str_color[0]}_{AXIS_NAMES_SHORT[x_i]}_{AXIS_NAMES_SHORT[y_i]}.svg"
+            )
             plt.savefig(file_name, format="svg")
             plt.clf()
 
     return 0
 
 
-def plot_points(openings: List[Opening], color: bool,
-                dest: str, b_f_name: str,
-                prop_sizing: bool = False) -> int:
+def plot_points(
+    openings: List[Opening],
+    color: bool,
+    dest: str,
+    b_f_name: str,
+    prop_sizing: bool = False,
+) -> int:
     """Plot the values for each opening on each unique parings of openings. Does not color
     points depending on clusters"""
 
@@ -993,7 +1085,9 @@ def plot_points(openings: List[Opening], color: bool,
             else:
                 str_color = "Black"
 
-            plt.title(f"Plot of clusters relating to chess opening styles for {str_color} openings")
+            plt.title(
+                f"Plot of clusters relating to chess opening styles for {str_color} openings"
+            )
 
             # Lable the axis
             plt.xlabel(AXIS_NAMES[x_i])
@@ -1001,25 +1095,34 @@ def plot_points(openings: List[Opening], color: bool,
 
             # Save toi custom file name
             file_name = (
-                dest + "/" +
-                f"{b_f_name}_{str_color[0]}_{AXIS_NAMES_SHORT[x_i]}_{AXIS_NAMES_SHORT[y_i]}.png")
+                dest
+                + "/"
+                + f"{b_f_name}_{str_color[0]}_{AXIS_NAMES_SHORT[x_i]}_{AXIS_NAMES_SHORT[y_i]}.png"
+            )
             plt.savefig(file_name, format="png")
             plt.clf()
 
     return 0
 
 
-def plot_recommendations(user_openings: List[Opening],
-                         other_openings: List[Opening],
-                         color: bool, dimensions: List[List[Union[int, float]]],
-                         x_i: int, y_i: int,
-                         dest: str, b_f_name: str,
-                         prop_sizing: bool = False):
+def plot_recommendations(
+    user_openings: List[Opening],
+    other_openings: List[Opening],
+    color: bool,
+    dimensions: List[List[Union[int, float]]],
+    x_i: int,
+    y_i: int,
+    dest: str,
+    b_f_name: str,
+    prop_sizing: bool = False,
+):
     """Plot the users openings and other openings on the same graph.
     User openings will appear in fuchsia and the other openings will appear in orange"""
 
     # Remove duplicate openings from other list
-    unique_openings = [op for op in other_openings if not check_opening_in_list(op, user_openings)]
+    unique_openings = [
+        op for op in other_openings if not check_opening_in_list(op, user_openings)
+    ]
 
     if len(user_openings) == 0 or len(other_openings) == 0:
         print("!!! Not enough openings to cluster !!!")
@@ -1046,7 +1149,9 @@ def plot_recommendations(user_openings: List[Opening],
     else:
         sizing = 20
 
-    first_opening_vals = normalise_values(read_opening_data(user_openings[0], color), dimensions)
+    first_opening_vals = normalise_values(
+        read_opening_data(user_openings[0], color), dimensions
+    )
 
     print(f"--- Plotting {AXIS_NAMES[x_i]} against {AXIS_NAMES[y_i]} --- ")
 
@@ -1105,15 +1210,20 @@ def plot_recommendations(user_openings: List[Opening],
     else:
         str_color = "Black"
 
-    plt.title(f"Plot of clusters relating to chess opening styles for {str_color} openings")
+    plt.title(
+        f"Plot of clusters relating to chess opening styles for {str_color} openings"
+    )
 
     # Lable the axis
     plt.xlabel(AXIS_NAMES[x_i])
     plt.ylabel(AXIS_NAMES[y_i])
 
     # Save toi custom file name
-    file_name = (dest + "/"
-                 + f"{b_f_name}_{str_color[0]}_{AXIS_NAMES_SHORT[x_i]}_{AXIS_NAMES_SHORT[y_i]}.png")
+    file_name = (
+        dest
+        + "/"
+        + f"{b_f_name}_{str_color[0]}_{AXIS_NAMES_SHORT[x_i]}_{AXIS_NAMES_SHORT[y_i]}.png"
+    )
     plt.savefig(file_name, format="png")
     plt.clf()
 
@@ -1122,58 +1232,82 @@ def main():
     """The main function called from the command line.
     Used within the GUI as it imitates a terminal"""
     parser = argparse.ArgumentParser(
-        prog='pychora_rec.py', usage='python %(prog)s [cluster_file] [user_file] [options]',
-        description='A program to recommend additions to a chess opening repertoire, using clusters formed from a large opening database')
+        prog="pychora_rec.py",
+        usage="python %(prog)s [cluster_file] [user_file] [options]",
+        description="A program to recommend additions to a chess opening repertoire, using clusters formed from a large opening database",
+    )
 
     clu_arg = parser.add_argument(
-        'cluster_file', help="Path of an opening database to form clusters from")
+        "cluster_file", help="Path of an opening database to form clusters from"
+    )
     us_arg = parser.add_argument(
-        'user_file', help="Path of a users opening repertoire to get recommendations for")
+        "user_file",
+        help="Path of a users opening repertoire to get recommendations for",
+    )
 
     # Default values are None Type
     col_arg = parser.add_argument(
-        '-c', '--color', help="Generate recommendations for a specific color. 0: Black, 1: White",
-        nargs='?')
+        "-c",
+        "--color",
+        help="Generate recommendations for a specific color. 0: Black, 1: White",
+        nargs="?",
+    )
     rec_arg = parser.add_argument(
-        '-r', '--exp_rec', help="Path of the destination for opening recommendations", nargs='?')
+        "-r",
+        "--exp_rec",
+        help="Path of the destination for opening recommendations",
+        nargs="?",
+    )
     plt_arg = parser.add_argument(
-        '-p', '--exp_plt', help="Path of the destination for graphical plots from clustering",
-        nargs='?')
+        "-p",
+        "--exp_plt",
+        help="Path of the destination for graphical plots from clustering",
+        nargs="?",
+    )
 
     # Default type is 0
     qua_arg = parser.add_argument(
-        '-q', '--clusters',
+        "-q",
+        "--clusters",
         help="The ammount of clusters to process the opening database into. Must be between 2-15",
-        nargs='?', default=0, type=int)
+        nargs="?",
+        default=0,
+        type=int,
+    )
 
     args = parser.parse_args()
 
     if not os.path.exists(args.cluster_file):
-        raise argparse.ArgumentError(clu_arg, 'File not found')
+        raise argparse.ArgumentError(clu_arg, "File not found")
 
     if not os.path.exists(args.user_file):
-        raise argparse.ArgumentError(us_arg, message='File not found')
+        raise argparse.ArgumentError(us_arg, message="File not found")
 
-    if args.exp_rec is not None and args.color not in ('0', '1'):
+    if args.exp_rec is not None and args.color not in ("0", "1"):
         raise argparse.ArgumentError(
-            col_arg, message='Is not valid. Must be 0 (Black) or 1 (White)')
+            col_arg, message="Is not valid. Must be 0 (Black) or 1 (White)"
+        )
 
     if args.exp_rec is not None and not os.path.exists(args.exp_rec):
-        raise argparse.ArgumentError(rec_arg, message='File not found')
+        raise argparse.ArgumentError(rec_arg, message="File not found")
 
     if args.exp_plt is not None and not os.path.exists(args.exp_plt):
-        raise argparse.ArgumentError(plt_arg, message='File not found')
+        raise argparse.ArgumentError(plt_arg, message="File not found")
 
     if args.clusters not in range(2, 16) and args.clusters != 0:
-        raise argparse.ArgumentError(qua_arg, message='Out of bounds. Must be between 2-15')
+        raise argparse.ArgumentError(
+            qua_arg, message="Out of bounds. Must be between 2-15"
+        )
 
-    process_clustering(args.cluster_file,
-                       args.user_file,
-                       args.color,
-                       args.exp_rec,
-                       args.exp_plt,
-                       args.clusters)
+    process_clustering(
+        args.cluster_file,
+        args.user_file,
+        args.color,
+        args.exp_rec,
+        args.exp_plt,
+        args.clusters,
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

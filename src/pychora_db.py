@@ -22,14 +22,17 @@ CONFIG: Dict[str, Union[int, float]] = {
     "DATABASE_OPENING_MIN_PROPORTION": 0.000_030,
     "DATABASE_SAMPLE_SIZE": 200_000,
     "OPENING_MOVES_PER_PLAYER": 6,
-    "THREAD_COUNT": 8
+    "THREAD_COUNT": 8,
 }
 
 
-def process_database(pgn_db: str, dest: str,
-                     min_proportion: float = float(CONFIG["DATABASE_OPENING_MIN_PROPORTION"]),
-                     opening_length: int = int(CONFIG["OPENING_MOVES_PER_PLAYER"]),
-                     max_games: int = int(CONFIG["DATABASE_MAX_OPENINGS_PROCCESSED"])) -> str:
+def process_database(
+    pgn_db: str,
+    dest: str,
+    min_proportion: float = float(CONFIG["DATABASE_OPENING_MIN_PROPORTION"]),
+    opening_length: int = int(CONFIG["OPENING_MOVES_PER_PLAYER"]),
+    max_games: int = int(CONFIG["DATABASE_MAX_OPENINGS_PROCCESSED"]),
+) -> str:
     """Main function which processes and converts a PGN database into a opening JSON database
 
     @params
@@ -52,13 +55,14 @@ def process_database(pgn_db: str, dest: str,
 
     thread_file_names, number_of_games = split_file_for_threads(pgn_db, max_games)
 
-    print(f"--- Completed Splitting file into {len(thread_file_names)} files for threads ---")
+    print(
+        f"--- Completed Splitting file into {len(thread_file_names)} files for threads ---"
+    )
 
     # Sample the openings initially to detect which openings are likely to be used more than
     # the minimum proportion. Could be removed through restructuring.
 
     with Pool(max_threads) as pool:
-
         # Each thread contains a dictionary of all the string representaions of the opening moves
         # and how often they are used. They then combine to form a single large dict.
 
@@ -71,10 +75,15 @@ def process_database(pgn_db: str, dest: str,
 
         cached_opening_str: Dict[str, int]
 
-        cached_opening_str = combine_dicts(pool.starmap(
-            sample_openings,
-            [(tfn, min_proportion, opening_length * 2)
-                for tfn in thread_file_names]))
+        cached_opening_str = combine_dicts(
+            pool.starmap(
+                sample_openings,
+                [
+                    (tfn, min_proportion, opening_length * 2)
+                    for tfn in thread_file_names
+                ],
+            )
+        )
 
         print("--- Opening Sampling Completed ---")
 
@@ -85,10 +94,15 @@ def process_database(pgn_db: str, dest: str,
 
         print("\n--- Beginning Opening Bitboard Processing ---")
 
-        processed_openings = combine_opening_dicts(pool.starmap(
-            process_openings,
-            [(tfn, cached_opening_str, opening_length*2, max_games)
-                for tfn in thread_file_names]))
+        processed_openings = combine_opening_dicts(
+            pool.starmap(
+                process_openings,
+                [
+                    (tfn, cached_opening_str, opening_length * 2, max_games)
+                    for tfn in thread_file_names
+                ],
+            )
+        )
 
         print("--- Opening Bitboard Processing Completed ---")
 
@@ -103,7 +117,7 @@ def process_database(pgn_db: str, dest: str,
 
     # Configure output dict
     out_dict["Opening Length"] = int(opening_length)
-    out_dict["Sample Rate"] = int(min_proportion*1000000)
+    out_dict["Sample Rate"] = int(min_proportion * 1000000)
     out_dict["Value Names"] = AXIS_NAMES
     out_dict["Openings"] = []
 
@@ -116,12 +130,14 @@ def process_database(pgn_db: str, dest: str,
     if dest is None:
         dest = os.path.dirname(pgn_db)
 
-    file_base_name = os.path.basename(pgn_db).split('.')[0][:10]
+    file_base_name = os.path.basename(pgn_db).split(".")[0][:10]
 
     # Save it to the given folder
     dest_name = (
-        str(dest) + "/" +
-        f"{file_base_name}_ol{int(opening_length)}_p{int(min_proportion*1_000_000)}.json")
+        str(dest)
+        + "/"
+        + f"{file_base_name}_ol{int(opening_length)}_p{int(min_proportion*1_000_000)}.json"
+    )
 
     with open(dest_name, "w") as out_file:  # type:ignore
         out_file.write(json.dumps(out_dict, indent=4))
@@ -147,11 +163,12 @@ def sample_openings(pgn_db: str, min_proportion: int, op_len: int) -> Dict[str, 
             # If the sample size is reached. Go through each opening and remove those
             # that occur less than the minimum proportion
             if game_no % CONFIG["DATABASE_SAMPLE_SIZE"] == 0 and game_no != 0:
-
                 # Temp dict prevents update the dictionary while iterating over it
                 temp_dict = {}
                 for open_str, count in cached_opening_str.items():
-                    if count >= ceil(int(min_proportion * CONFIG["DATABASE_SAMPLE_SIZE"])):
+                    if count >= ceil(
+                        int(min_proportion * CONFIG["DATABASE_SAMPLE_SIZE"])
+                    ):
                         temp_dict[open_str] = count
 
                 cached_opening_str = temp_dict.copy()
@@ -188,12 +205,15 @@ def sample_openings(pgn_db: str, min_proportion: int, op_len: int) -> Dict[str, 
     cached_opening_str = temp_dict.copy()
     temp_dict.clear()
 
-    print(f"--- Thread for {pgn_db} Completed: {len(cached_opening_str)} Openings recorded. ---")
+    print(
+        f"--- Thread for {pgn_db} Completed: {len(cached_opening_str)} Openings recorded. ---"
+    )
     return cached_opening_str
 
 
-def process_openings(pgn_db: str, chosen_openings: Dict[str, int],
-                     op_len: int, max_games: int) -> Dict[str, Opening]:
+def process_openings(
+    pgn_db: str, chosen_openings: Dict[str, int], op_len: int, max_games: int
+) -> Dict[str, Opening]:
     """Convert each opening within a dict of opening strings into an Opening type. A count
     for each time an opening occurs is stored within the opening type
     Used within multithreading"""
@@ -299,8 +319,8 @@ def split_file_for_threads(pgn_db: str, max_games: int) -> Tuple[List[str], int]
     # Remove any threads in the thread file
     remove_old_thread_files()
 
-    if not os.path.exists('threads'):
-        os.mkdir('threads')
+    if not os.path.exists("threads"):
+        os.mkdir("threads")
 
     base_thread_pgn_db = "threads/" + "_" + file_base_name + "_T_"
 
@@ -324,7 +344,7 @@ def split_file_for_threads(pgn_db: str, max_games: int) -> Tuple[List[str], int]
                 game_count += 1
                 game_start = True
 
-            last_line_empty = bool(line == '\n')
+            last_line_empty = bool(line == "\n")
 
             # If the game count reaches the sample size, change to another outfile
             if game_count % CONFIG["DATABASE_SAMPLE_SIZE"] == 0 and game_start:
@@ -353,8 +373,7 @@ def split_file_for_threads(pgn_db: str, max_games: int) -> Tuple[List[str], int]
 
 
 def retrieve_opening_string(game: chess.pgn.Game, op_len: int) -> str:
-    """Return the opening string for a chess game. Returns "" if not valid
-    """
+    """Return the opening string for a chess game. Returns "" if not valid"""
     opening_string_w: str = ""
     opening_string_b: str = ""
     zipped = zip(game.mainline_moves(), range(op_len))
@@ -386,6 +405,7 @@ def remove_old_thread_files():
         except OSError:
             print("!!! Error deleting Thread file {f} !!!")
 
+
 ### MAIN FUNCTION ###
 
 
@@ -393,50 +413,65 @@ def main():
     """The main function called from the command line.
     Used within the GUI as it imitates a terminal"""
     parser = argparse.ArgumentParser(
-        prog='pychora_db.py', usage='python %(prog)s [cluster_file] [user_file] [options]',
-        description='A program to convert chess PGN databases into an JSON opening repertoire')
+        prog="pychora_db.py",
+        usage="python %(prog)s [pgn_db] [options]",
+        description="A program to convert chess PGN databases into an JSON opening repertoire",
+    )
 
-    db_arg = parser.add_argument('pgn_db', help='Path of the PGN database')
+    db_arg = parser.add_argument("pgn_db", help="Path of the PGN database")
 
     dest_arg = parser.add_argument(
-        '-d', '--dest', nargs='?',
-        help='Path to export the JSON opening database to. Defaults to same directory as database')
+        "-d",
+        "--dest",
+        nargs="?",
+        help="Path to export the JSON opening database to. Defaults to same directory as database",
+    )
     prop_arg = parser.add_argument(
-        '-p', '--min_prop', nargs='?',
-        help='The minimum number of games per 1,000,000 that an opening is used in to store. Between 0 - 2000',
-        type=int, default=float(CONFIG["DATABASE_OPENING_MIN_PROPORTION"]*1_000_000))
+        "-p",
+        "--min_prop",
+        nargs="?",
+        help="The minimum number of games per 1,000,000 that an opening is used in to store. Between 0 - 2000",
+        type=int,
+        default=float(CONFIG["DATABASE_OPENING_MIN_PROPORTION"] * 1_000_000),
+    )
 
     len_arg = parser.add_argument(
-        '-l', '--op_len', nargs='?',
-        help='Length in moves to be considered an opening. Between 4 - 12', type=int,
-        default=CONFIG["OPENING_MOVES_PER_PLAYER"])
+        "-l",
+        "--op_len",
+        nargs="?",
+        help="Length in moves to be considered an opening. Between 4 - 12",
+        type=int,
+        default=CONFIG["OPENING_MOVES_PER_PLAYER"],
+    )
     parser.add_argument(
-        '-g', '--max_games', nargs='?',
-        help='The maximum amount of games to process within the PGN database', type=int,
-        default=CONFIG["DATABASE_MAX_OPENINGS_PROCCESSED"])
+        "-g",
+        "--max_games",
+        nargs="?",
+        help="The maximum amount of games to process within the PGN database",
+        type=int,
+        default=CONFIG["DATABASE_MAX_OPENINGS_PROCCESSED"],
+    )
 
     args = parser.parse_args()
 
     if not os.path.exists(args.pgn_db):
-        raise argparse.ArgumentError(db_arg, 'File not found')
+        raise argparse.ArgumentError(db_arg, "File not found")
 
     if args.dest is not None and not os.path.exists(args.dest):
-        raise argparse.ArgumentError(dest_arg, 'File not found')
+        raise argparse.ArgumentError(dest_arg, "File not found")
 
     if args.min_prop < 0 or args.min_prop > 2000:
-        raise argparse.ArgumentError(prop_arg, 'Out of bounds. Must be between 0 - 2000 ')
+        raise argparse.ArgumentError(
+            prop_arg, "Out of bounds. Must be between 0 - 2000 "
+        )
 
     if args.op_len < 4 or args.op_len > 12:
-        raise argparse.ArgumentError(len_arg, 'Out of bounds. Must be between 4 - 12 ')
+        raise argparse.ArgumentError(len_arg, "Out of bounds. Must be between 4 - 12 ")
 
     process_database(
-        args.pgn_db,
-        args.dest,
-        args.min_prop/1_000_000,
-        args.op_len,
-        args.max_games
+        args.pgn_db, args.dest, args.min_prop / 1_000_000, args.op_len, args.max_games
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
